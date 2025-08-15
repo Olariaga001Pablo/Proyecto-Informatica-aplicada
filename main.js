@@ -1,11 +1,10 @@
 const  {app, BrowserWindow} = require('electron');
-require('electron-reload')(__dirname, {
-    electron: require('electron')
-});
+const { default: electronReload } = require('electron-reload');
 
 let win;
 
-function createWindow () {
+app.on('ready', () => {
+    const electronReload = require("electron-reload");
   win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -14,11 +13,10 @@ function createWindow () {
     }
   });
 
-  win.loadFile('index.html');
+  win.loadFile('lib/index.html');
 
   win.on('closed', () => {
     win = null;
   });
-}
 
-app.whenReady().then(createWindow);
+});

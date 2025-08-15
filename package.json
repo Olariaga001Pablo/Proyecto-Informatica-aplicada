@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "electron": "^37.2.6"
+    "electron": "^37.2.6",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "scripts": {
+    "start": "electron main.js"
   }
 }
