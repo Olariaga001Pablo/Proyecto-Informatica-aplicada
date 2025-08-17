@@ -1,9 +1,12 @@
 {
   "dependencies": {
+    "cors": "^2.8.5",
     "electron": "^37.2.6",
-    "electron-reload": "^2.0.0-alpha.1"
+    "electron-reload": "^2.0.0-alpha.1",
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7"
   },
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron src/main.js"
   }
 }
