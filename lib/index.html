@@ -22,43 +22,34 @@
     }
 
 </style>
+
 <div class="navBar">
-    <button class="button" onclick="">Add Card</button>
-    <button class="button">Show Card</button>
-    <button class="button">Delete Card</button>
-    <button class="button">Edit Card</button>
-    <button class="button">Help</button>
+    <button class="button" onclick="clicked('show')">Show Card</button>
+    <button class="button" onclick="clicked('help')">Help</button>
 </div>
+
 <script>
-    
 
-    const container = document.createElement('div');
-    container.className = 'container';
-    document.body.appendChild(container);
 
-    function createCard({ title, content }) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.textContent = `${title}: ${content}`;
-        return card;
-    }
 
-    async function getCardData() {
-        try {
-            const response = await fetch('http://localhost:3000'); // pedir los datos al backend
-            const rows = await response.json();
-
-            rows.forEach(row => {
-                const card = createCard(row);
-                container.appendChild(card);
-            });
-        } catch (err) {
-            console.error('Error fetching card data:', err);
+    function clicked(action){
+        switch(action){
+            case 'show':
+                if (window.electronAPI) {
+                    window.electronAPI.loadPage('showcards.html');
+                } else {
+                    window.location.href = 'showcards.html';
+                }
+                break;
+            case 'help':
+                if (window.electronAPI) {
+                    window.electronAPI.loadPage('help.html');
+                } else {
+                    window.location.href = 'help.html';
+                }
+                break;
         }
     }
-
-    getCardData();
+    
+    
 </script>
-<section >
-   <div id="cardContainer" class="card-container"></div>
-</section>

@@ -17,7 +17,7 @@ app.use(express.json());
 
 
 //endpoint para obtener todas las cards
-app.get('/', (req, res) => {
+app.get('/get', (req, res) => {
     console.log('Request type:', req.method);
     //db.all trae todos los elementos
     db.all("SELECT * FROM cards", [], (err, row) => {
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
     });
 });
 
-app.post('/', (req, res) => {
+app.post('/post', (req, res) => {
     const { title, content } = req.body;
     db.run("INSERT INTO cards (title, content) VALUES (?, ?)", [title, content], function(err) {
         if (err) {
@@ -40,6 +40,7 @@ app.post('/', (req, res) => {
         }
         res.status(201).json({ id: this.lastID, title, content });
     });
+
 });
 
 const port = 3000;

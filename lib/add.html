@@ -1,8 +1,56 @@
+<h2>Add Card</h2>
 <section>
-    <h2>Add Card</h2>
     <form id="addCardForm">
         <input type="text" id="cardTitle" placeholder="Card Title" required />
-        <textarea id="cardContent" placeholder="Card Content" required></textarea>
-        <button type="submit">Add Card</button>
+        <input type="text" id="cardContent" placeholder="Card Content" required />
+       
     </form>
 </section>
+
+<footer>
+    <button class="button" onclick="back()">Back</button>
+    <button type="submit" onclick="saveCard()">Add Card</button>
+</footer>
+
+<script>
+    function back() {
+        if(window.electronAPI) {
+            window.electronAPI.loadPage('showcards.html');
+        } else {
+            window.location.href = 'showcards.html';
+        }
+    }
+
+    async function saveCard() {
+        const title = document.getElementById('cardTitle').value;
+        const content = document.getElementById('cardContent').value;
+
+        // Aquí puedes implementar la lógica para guardar la tarjeta
+        console.log('Guardar tarjeta:', { title, content });
+
+        // Ejemplo de llamada a la API
+        try {
+            const response = await fetch('http://localhost:3000/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, content })
+            });
+
+            if (response.ok) {
+                console.log('Tarjeta guardada exitosamente');
+                // Redirigir o actualizar la UI según sea necesario
+            } else {
+                console.error('Error al guardar la tarjeta');
+            }
+        } catch (error) {
+            console.error('Error de red:', error);
+        }
+         if(window.electronAPI) {
+            window.electronAPI.loadPage('showcards.html');
+        } else {
+            window.location.href = 'showcards.html';
+        }
+    }
+</script>
