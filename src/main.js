@@ -17,8 +17,8 @@ function createWindow() {
         }
     });
     
-    win.loadURL(`file://${__dirname}/../lib/index.html`);
-
+   // win.loadURL(`file://${__dirname}/../lib/index.html`);
+     win.loadURL(`file://${__dirname}/../lib/loggin.html`);
     win.on('closed', () => {
         win = null;
     });

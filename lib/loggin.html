@@ -1,0 +1,57 @@
+<style>
+    .input {
+        display: block;
+        margin: auto;
+        align-content: center;
+        text-align: center;
+        margin-top: 12px;
+        padding: 18px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 50%;
+        box-sizing: border-box;
+    }
+
+    .text {
+        text-align: center;
+        font-size: xx-large;
+        font-weight: bold;
+    }
+
+    .button {
+        display: block;
+        background-color: #4CAF50;
+        margin: auto;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: large;
+        margin-top: 12px;
+    }
+
+    .button:hover {
+        background-color: #45a049;
+    }
+</style>
+<script>
+    const loginButton = document.querySelector('.button');
+    loginButton.addEventListener('click', () => {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        console.log(`Username: ${username}, Password: ${password}`);
+    });
+    
+
+</script>
+<div class="text">
+    <h1>
+        Login
+    </h1>
+</div>
+<input type="text" id="username" class="input" placeholder="Username" required>
+<input type="password" id="password" class="input" placeholder="Password" required>
+
+<button class="button">Login</button>
+<button class="button">Register</button>
