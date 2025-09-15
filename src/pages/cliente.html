@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        background-color: #fef7ff;
+    }
+    .barra-de-navegacion-horizontal {
+        width: 100%;
+        background-color: #fef7ff;
+        color: #fef7ff;
+        height: 60px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px 20px;
+        
+        margin-bottom: 1px;
+    }
+    .barra-de-navegacion-horizontal a {
+        border-radius: 5px; 
+        color: dimgrey;
+        text-decoration: none;
+        margin: 5px 5px;
+        padding: 9px ;
+        width: 70%;
+        text-align: center;
+    }
+    .barra-de-navegacion-horizontal a:hover {
+        background-color: #eaddff;
+    }
+    .button-nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    .title {
+        text-align: center;
+        margin: 5px 0;
+    }
+    .title h1 {
+        margin: 0;
+        padding: 0;
+        border: 0 ;
+        background-color: #fef7ff;
+        color: dimgrey;
+    }
+    .nav-filtrar {
+        width: 100%;
+        background-color: #fef7ff;
+        color: #000000;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        
+        margin-bottom: 1px;
+    }
+    #filtrar-mes {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-items: center;
+        gap: 10px;
+    }
+    .nav-filtrar button {
+        border-radius: 5px;
+        background-color: #FFFFFF;
+        color: dimgrey;
+        text-decoration: none;
+        margin: 5px 5px;
+        padding: 15px ;
+        width: 100px;
+        text-align: center;
+    }
+    .nav-filtrar button:hover {
+        background-color: #e8def8;
+    }   
+    .cliente-item {
+        background-color: #FFFFFF;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .buscar input[type="search"] {
+        
+        gap: 5px;
+        border: 1px solid olive;
+        padding: 15px;
+        border-radius: 25px;
+        background-image: url('../public/icons/lineicons--search-1.svg');
+        background-repeat: no-repeat;
+        background-position: 10px center;
+        max-width: 250px; /* Limita el ancho del input */
+        padding-left: 40px;
+        
+    }
+    .buscar {
+        margin-left: auto;
+        margin-right: 40px; 
+    }
+</style>
+<script>
+    function cambiar() {
+        if (document.getElementById("home")) {
+            window.location.href = '../index.html';
+        }
+        else {
+           console.log("No se encontró el elemento con id 'home'");
+        }
+    }
+    function filtrarPorMes() {
+        const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
+        const contenedor = document.getElementById("filtrar-mes");
+        contenedor.innerHTML = ""; // limpiar antes
+        meses.forEach(mes => {
+            const item = document.createElement("button");
+            item.textContent = mes;
+            contenedor.appendChild(item);
+        });
+    }
+    // Función para obtener datos de clientes desde el backend: FUNCIONA
+    
+    document.addEventListener("DOMContentLoaded", async () => {
+        
+
+        const data = async () => {
+            const clientes = await window.api.getClientes();
+            console.log("Clientes desde el render:", clientes);
+            return clientes;
+        };
+        async function cargarClientes() {
+            const clientes =  await data();
+            console.log("Clientes desde la funcion cargarClientes:");
+            console.log(clientes);
+            const contenedor = document.getElementById("contenedor");
+            clientes.forEach(cliente => {
+                const item = document.createElement("div");
+                item.className = "cliente-item";
+                item.textContent = cliente.nombre;
+                contenedor.appendChild(item);
+            });
+        } 
+        cargarClientes();
+        filtrarPorMes();
+
+       
+    });
+    
+   
+</script>
+<body>
+    <nav class="barra-de-navegacion-horizontal">
+        <div class="button-nav" id="home" onclick="cambiar()">
+            <img src="../public/icons/lineicons--arrow-left.svg" alt="Icono" width="32" height="32">
+            
+        </div>
+    </nav>
+    <div class="title">
+        <h1>Clientes</h1>
+    </div>
+    <nav class="nav-filtrar">
+        <div class="button-nav">
+            <ul id="filtrar-mes"></ul>
+        <div class="buscar">
+            <input type="search" id="buscar" placeholder="Buscar..." >
+        </div>
+
+        </div>
+    </nav>
+    <section id="contenedor">
+
+    </section>
+    
+</body>
+</html>

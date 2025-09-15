@@ -1,0 +1,19 @@
+{
+  "name": "proyecto-informatica-aplicada",
+  "version": "1.0.0",
+  "description": "Proyecto de informática aplicada",
+  "main": "./src/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^38.1.0"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  }
+}

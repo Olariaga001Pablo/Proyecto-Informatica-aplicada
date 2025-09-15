@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Clientes</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        background-color: fef7ff;
+    }
+    .barra-de-navegacion-vertical {
+        width: 100px;
+        background-color: #fef7ff;
+        color: #fef7ff;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+        
+        margin-right: 1px;
+    }
+    .barra-de-navegacion-vertical a {
+        border-radius: 5px;
+        color: dimgrey;
+        text-decoration: none;
+        margin: 5px 5px;
+        padding: 9px ;
+        width: 70%;
+        text-align: center;
+    }
+    .barra-de-navegacion-vertical a:hover {
+        background-color: #eaddff;
+    }
+    .button-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .button-nav-ajustes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: auto;
+        margin-bottom: 20px;
+    }
+    
+</style>
+<!-- <script type="module" src="cliente/script.js"></script> -->
+ <script>
+    function cambiar() {
+        if (document.getElementById("clientes")) {
+            window.location.href = './pages/cliente.html';
+        }
+        else {
+           console.log("No se encontró el elemento con id 'clientes'");
+        }
+    }
+ </script>
+<body>
+    <nav class="barra-de-navegacion-vertical">
+        <div class="button-nav">
+            <img src="./public/icons/majesticons--home.svg" alt="Icono" width="32" height="32">
+            <a href="index.html">Home</a>
+        </div>
+        <div class="button-nav" id="clientes">
+            <img src="./public/icons/line-md--account.svg" alt="Icono" width="32" height="32">
+            <a onclick="cambiar()">Clientes</a>
+        </div>
+        <div class="button-nav">
+            <img src="./public/icons/lineicons--box-closed.svg" alt="Icono" width="32" height="32">
+            <a onclick="location.href='inventario.html'">Inventario</a>
+        </div>
+        <div class="button-nav">
+            <img src="./public/icons/lineicons--clipboard.svg" alt="Icono" width="32" height="32">
+            <a href="facturacion.html">Facturación</a>
+        </div>
+        <div class="button-nav-ajustes">
+            <img src="./public/icons/lineicons--gear-1.svg" alt="Icono" width="32" height="32">
+            <a href="configuracion.html">Configuración</a>
+        </div>
+    </nav>
+
+        
+</body>
+</html>
