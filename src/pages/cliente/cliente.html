@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* Estilos generales para el body */
+    body {
+        font-family: Arial, sans-serif; /* Fuente principal */
+        margin: 0; /* Elimina margen por defecto */
+        padding: 0; /* Elimina padding por defecto */
+        display: flex; /* Permite layout flexible vertical */
+        flex-direction: column; /* Apila los hijos verticalmente */
+        background-color: #fef7ff; /* Color de fondo suave */
+    }
+    /* Barra de navegación superior */
+    .barra-de-navegacion-horizontal {
+        background-color: #fef7ff; /* Fondo igual al body */
+        color: #fef7ff; /* No se usa, los hijos tienen color propio */
+        height: 60px; /* Altura fija */
+        display: flex; /* Layout horizontal */
+        flex-direction: row; /* Apila hijos horizontalmente */
+        align-items: center; /* Centra verticalmente los hijos */
+        padding: 10px 20px; /* Espaciado interno */
+        margin-bottom: 1px; /* Separación inferior mínima */
+    }
+    /* Título principal */
+    .title {
+        text-align: center; /* Centra el texto */
+        margin: 5px 0; /* Espaciado vertical */
+    }
+    .title h1 {
+        margin: 0; /* Elimina margen por defecto */
+        padding: 0; /* Elimina padding por defecto */
+        border: 0 ; /* Elimina borde por defecto (innecesario en h1) */
+        background-color: #fef7ff; /* Fondo igual al body */
+        color: dimgrey; /* Color del texto */
+    }
+    /* Barra de filtros y buscador */
+    .nav-filtrar {
+        display: flex; /* Layout flexible horizontal */
+        justify-content: flex-end; /* Alinea hijos a la derecha */
+        width: 100%; /* Ocupa todo el ancho disponible */
+        background-color: #fef7ff; /* Fondo igual al body */
+        color: #000000; /* Color de texto (no se usa directamente) */
+        height: 60px; /* Altura fija */
+        align-items: center; /* Centra verticalmente los hijos */
+        margin-bottom: 1px; /* Separación inferior mínima */
+    }
+    /* Contenedor principal de la sección de clientes */
+    .container {
+        display: flex; /* Layout flexible vertical */
+        flex-direction: column; /* Apila hijos verticalmente */
+        justify-content: center; /* Centra verticalmente (si hay espacio) */
+        padding: 20px; /* Espaciado interno */
+    }
+    /* Tarjeta de cliente individual */
+    .cliente-item {
+        background-color: #FFFFFF; /* Fondo blanco */
+        border: 1px solid #ddd; /* Borde gris claro */
+        border-radius: 5px; /* Esquinas redondeadas */
+        padding: 10px; /* Espaciado interno */
+        margin: 10px; /* Separación entre tarjetas */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    }
+    /* Input de búsqueda */
+    .buscar input[type="search"] {
+        gap: 5px; /* No tiene efecto en input, se puede eliminar */
+        border: 1px solid olive; /* Borde personalizado */
+        padding: 15px; /* Espaciado interno */
+        border-radius: 25px; /* Esquinas redondeadas */
+        background-image: url('../../public/icons/lineicons--search-1.svg'); /* Icono de búsqueda */
+        background-repeat: no-repeat; /* No repite el icono */
+        background-position: 10px center; /* Posiciona el icono a la izquierda */
+        max-width: 250px; /* Limita el ancho del input */
+        padding-left: 40px; /* Espacio para el icono */
+        margin-right: 30px; /* Separación del borde derecho */
+    }
+    /* No hay estilos para .buscar, pero podría usarse para posicionar el input */
+</style>
+<script>
+    function cambiar() {
+        if (document.getElementById("home")) {
+            window.location.href = './../../index.html';
+        }
+        else {
+           console.log("No se encontró el elemento con id 'home'");
+        }
+    }
+    function filtrarPorMes() {
+        const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
+        const contenedor = document.getElementById("filtrar-mes");
+        contenedor.innerHTML = ""; // limpiar antes
+        meses.forEach(mes => {
+            const item = document.createElement("button");
+            item.textContent = mes;
+            contenedor.appendChild(item);
+        });
+    }
+    // Función para obtener datos de clientes desde el backend: FUNCIONA
+    
+    document.addEventListener("DOMContentLoaded", async () => {
+        
+
+        const data = async () => {
+            const clientes = await window.api.getClientes();
+            console.log("Clientes desde el render:", clientes);
+            return clientes;
+        };
+        async function cargarClientes() {
+            const clientes =  await data();
+            console.log("Clientes desde la funcion cargarClientes:");
+            console.log(clientes);
+            const contenedor = document.getElementById("contenedor");
+            clientes.forEach(cliente => {
+                const item = document.createElement("div");
+                item.className = "cliente-item";
+                item.textContent = cliente.nombre;
+                contenedor.appendChild(item);
+            });
+        } 
+        cargarClientes();
+    
+
+       
+    });
+    
+   
+</script>
+<body>
+    <nav class="barra-de-navegacion-horizontal">
+        <div class="button-nav" id="home" onclick="cambiar()">
+            <img src="../../public/icons/lineicons--arrow-left.svg" alt="Icono" width="32" height="32">
+            
+        </div>
+    </nav>
+    <div class="title">
+        <h1>Clientes</h1>
+    </div>
+    <nav class="nav-filtrar">
+        <div class="button-nav">
+
+            <div class="buscar">
+                <input type="search" id="buscar" placeholder="Buscar..." >
+            </div>
+
+        </div>
+    </nav>
+    <section id="contenedor" class="container">
+
+    </section>
+    
+</body>
+</html>
