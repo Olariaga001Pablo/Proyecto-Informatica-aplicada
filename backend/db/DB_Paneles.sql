@@ -1,150 +1,119 @@
 PRAGMA foreign_keys = ON;
-
--- ==========================
--- TABLA USUARIOS (central)
--- ==========================
-CREATE TABLE Usuarios (
-    id_usuario     INTEGER PRIMARY KEY AUTOINCREMENT,
-    username       TEXT NOT NULL UNIQUE,
-    password_hash  TEXT NOT NULL,
-    rol            TEXT NOT NULL CHECK(rol IN ('admin', 'cliente', 'empleado'))
+ 
+ -------------------Tabla Empleados-------------------
+CREATE TABLE Empleado (
+	id_empleado INTEGER PRIMARY KEY AUTOINCREMENT,
+	nombre TEXT NOT NULL, 
+	apellido TEXT NOT NULL,
+	direccion TEXT,
+	codigo_postal TEXT
 );
 
--- ==========================
--- CLIENTES Y EMPLEADOS (extienden Usuarios)
--- ==========================
-CREATE TABLE Clientes (
-    id_cliente     INTEGER PRIMARY KEY,
-    nombre         TEXT NOT NULL,
-    documento      TEXT NOT NULL UNIQUE,
-    direccion      TEXT,
-    telefono       TEXT,
-    email          TEXT UNIQUE,
-    FOREIGN KEY (id_cliente) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE
+----Tabla Especialidad y Relacion N:M con Empleado----
+CREATE TABLE Especialidad (
+	id_especialidad INTEGER PRIMARY KEY AUTOINCREMENT,
+	titulo TEXT NOT NULL,
+	matricula TEXT
 );
 
-CREATE TABLE Empleados (
-    id_empleado    INTEGER PRIMARY KEY,
-    nombre         TEXT NOT NULL,
-    especialidad   TEXT,
-    telefono       TEXT,
-    FOREIGN KEY (id_empleado) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE
+CREATE TABLE Empleado_Especialidad (
+	id_empleado INTEGER NOT NULL,
+	id_especialidad INTEGER NOT NULL,
+	PRIMARY KEY (id_empleado, id_especialidad),
+	FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado) ON DELETE CASCADE,
+	FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad) ON DELETE CASCADE
 );
 
--- ==========================
--- PROVEEDORES
--- ==========================
-CREATE TABLE Proveedores (
-    id_proveedor   INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre         TEXT NOT NULL,
-    contacto       TEXT,
-    telefono       TEXT,
-    email          TEXT UNIQUE
+---------------------Tabla Cliente--------------------
+CREATE TABLE Cliente (
+	id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+	nombre TEXT NOT NULL, 
+	apellido TEXT NOT NULL,
+	documento TEXT NOT NULL UNIQUE, ----Asegura que no haya duplicados
+	email TEXT NOT NULL UNIQUE,
+	telefono TEXT,
+	direccion TEXT,
+	codigo_postal TEXT
 );
 
--- ==========================
--- INVENTARIO Y MOVIMIENTOS
--- ==========================
-CREATE TABLE Inventario (
-    id_producto    INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre         TEXT NOT NULL,
-    tipo           TEXT NOT NULL,
-    stock_actual   INTEGER NOT NULL DEFAULT 0,
-    stock_minimo   INTEGER NOT NULL DEFAULT 0,
-    id_proveedor   INTEGER,
-    FOREIGN KEY (id_proveedor) REFERENCES Proveedores(id_proveedor) ON DELETE SET NULL
+------------Tabla de Proveedores y Producto------------
+CREATE TABLE Proveedor (
+	id_proveedor INTEGER PRIMARY KEY AUTOINCREMENT,
+	nombre TEXT NOT NULL, 
+	email TEXT,
+	telefono TEXT,
+	direccion TEXT,
+	codigo_postal TEXT
 );
 
-CREATE TABLE MovimientosInventario (
-    id_movimiento  INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_producto    INTEGER NOT NULL,
-    fecha          DATE NOT NULL,
-    tipo_movimiento TEXT NOT NULL CHECK(tipo_movimiento IN ('entrada', 'salida')),
-    cantidad       INTEGER NOT NULL CHECK(cantidad > 0),
-    FOREIGN KEY (id_producto) REFERENCES Inventario(id_producto) ON DELETE CASCADE
+CREATE TABLE Producto (
+	id_producto INTEGER PRIMARY KEY AUTOINCREMENT,
+	nombre TEXT NOT NULL,
+	tipo TEXT,
+	precio REAL NOT NULL CHECK(precio >= 0),
+	stock INTEGER NOT NULL DEFAULT  0 CHECK (stock >= 0),
+	id_proveedor INTEGER,
+	FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id_proveedor) ON DELETE SET NULL
 );
 
--- ==========================
--- PROYECTOS Y SIMULACIONES
--- ==========================
-CREATE TABLE Proyectos (
-    id_proyecto    INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_cliente     INTEGER NOT NULL,
-    ubicacion      TEXT NOT NULL,
-    tipo_panel     TEXT,
-    cantidad_paneles INTEGER,
-    estado         TEXT CHECK(estado IN ('planificacion','en_proceso','completado')),
-    fecha_inicio   DATE,
-    fecha_fin      DATE,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente) ON DELETE CASCADE
+-------------------Tabla de Proyecto-------------------
+CREATE TABLE Proyecto (
+	id_proyecto INTEGER PRIMARY KEY AUTOINCREMENT,
+	tipo TEXT,
+	costo REAL CHECK(costo >= 0),
+	duracion INTEGER CHECK(duracion >= 0),
+	fecha TEXT,
+    direccion TEXT,
+    codigo TEXT,
+	id_cliente INTEGER,
+	FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente) ON DELETE SET NULL
 );
 
-CREATE TABLE Simulaciones (
-    id_simulacion  INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_proyecto    INTEGER NOT NULL,
-    rendimiento_estimado REAL,
-    ahorro_estimado REAL,
-    FOREIGN KEY (id_proyecto) REFERENCES Proyectos(id_proyecto) ON DELETE CASCADE
+----Relacion N:M de Proyecto con empleado y de Proyecto con Producto----
+CREATE TABLE Empleado_Proyecto (
+	id_proyecto INTEGER,
+	id_empleado INTEGER,
+	PRIMARY KEY (id_proyecto, id_empleado),
+	FOREIGN KEY (id_proyecto) REFERENCES Proyecto(id_proyecto) ON DELETE CASCADE,
+	FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado) ON DELETE CASCADE
 );
 
--- ==========================
--- FACTURAS, DETALLES Y PAGOS
--- ==========================
-CREATE TABLE Facturas (
-    id_factura     INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_cliente     INTEGER NOT NULL,
-    id_proyecto    INTEGER NOT NULL,
-    fecha          DATE NOT NULL,
-    monto_total    REAL NOT NULL,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente) ON DELETE CASCADE,
-    FOREIGN KEY (id_proyecto) REFERENCES Proyectos(id_proyecto) ON DELETE CASCADE
+CREATE TABLE Producto_Proyecto (
+	id_proyecto INTEGER,
+	id_producto INTEGER,
+	cantidad INTEGER DEFAULT 1 CHECK(cantidad > 0),
+	PRIMARY KEY (id_proyecto, id_producto),
+	FOREIGN KEY (id_proyecto) REFERENCES Proyecto(id_proyecto) ON DELETE CASCADE,
+	FOREIGN KEY (id_producto) REFERENCES Producto(id_producto) ON DELETE CASCADE
 );
 
-CREATE TABLE DetalleFactura (
-    id_detalle     INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_factura     INTEGER NOT NULL,
-    id_producto    INTEGER NOT NULL,
-    cantidad       INTEGER NOT NULL CHECK(cantidad > 0),
+--------Tabla de Facturacion, Items y Pagos---------
+CREATE TABLE Facturacion (
+	id_facturacion INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_cliente INTEGER,
+    id_proyecto INTEGER,
+    fecha TEXT,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente) ON DELETE SET NULL,
+    FOREIGN KEY (id_proyecto) REFERENCES Proyecto(id_proyecto) ON DELETE SET NULL
+);
+
+CREATE TABLE ItemFactura (
+    id_item INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_facturacion INTEGER NOT NULL,
+    descripcion TEXT,
+    id_producto INTEGER,
+    cantidad INTEGER DEFAULT 1 CHECK(cantidad > 0),
     precio_unitario REAL NOT NULL CHECK(precio_unitario >= 0),
-    FOREIGN KEY (id_factura) REFERENCES Facturas(id_factura) ON DELETE CASCADE,
-    FOREIGN KEY (id_producto) REFERENCES Inventario(id_producto) ON DELETE RESTRICT
+    FOREIGN KEY (id_facturacion) REFERENCES Facturacion(id_facturacion) ON DELETE CASCADE,
+    FOREIGN KEY (id_producto) REFERENCES Producto(id_producto) ON DELETE SET NULL
 );
 
-CREATE TABLE Pagos (
-    id_pago        INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_factura     INTEGER NOT NULL,
-    fecha_pago     DATE NOT NULL,
-    monto          REAL NOT NULL CHECK(monto > 0),
-    FOREIGN KEY (id_factura) REFERENCES Facturas(id_factura) ON DELETE CASCADE
+CREATE TABLE RegistroPagos (
+    id_pago INTEGER PRIMARY KEY AUTOINCREMENT,
+    fecha TEXT,
+    metodo_pago TEXT,
+    monto_pago REAL NOT NULL CHECK(monto_pago >= 0),
+    estado TEXT,
+    id_facturacion INTEGER,
+    FOREIGN KEY (id_facturacion) REFERENCES Facturacion(id_facturacion) ON DELETE CASCADE
 );
-
--- ==========================
--- RELACIÓN N:M EMPLEADOS <-> PROYECTOS
--- ==========================
-CREATE TABLE EmpleadoProyecto (
-    id_empleado    INTEGER NOT NULL,
-    id_proyecto    INTEGER NOT NULL,
-    PRIMARY KEY (id_empleado, id_proyecto),
-    FOREIGN KEY (id_empleado) REFERENCES Empleados(id_empleado) ON DELETE CASCADE,
-    FOREIGN KEY (id_proyecto) REFERENCES Proyectos(id_proyecto) ON DELETE CASCADE
-);
-
--- =========================================
--- VISTA: HistorialCliente
--- =========================================
-CREATE VIEW HistorialCliente AS
-SELECT 
-    c.id_cliente,
-    c.nombre AS cliente_nombre,
-    c.documento,
-    c.email,
-    p.id_proyecto,
-    p.ubicacion,
-    p.tipo_panel,
-    p.estado,
-    f.id_factura,
-    f.fecha AS fecha_factura,
-    f.monto_total
-FROM Clientes c
-LEFT JOIN Proyectos p ON c.id_cliente = p.id_cliente
-LEFT JOIN Facturas f ON p.id_proyecto = f.id_proyecto;
