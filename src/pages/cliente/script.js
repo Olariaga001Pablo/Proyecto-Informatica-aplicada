@@ -1,13 +1,17 @@
 function cambiar() {
   const id_home = document.getElementById("home");
+  const click = document.getElementsByClassName("cliente-item");
+  const contenedor = document.getElementById("contenedor");
   if (id_home) {
     id_home.addEventListener("click", () => {
       window.location.href = "./../../index.html";
     });
   } else {
-    console.log("No se encontró el elemento con id 'home'");
+    console.log("No se encontró el elemento con id 'cliente'");
   }
 }
+
+
 
 function filtrarPorMes() {
   const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
@@ -70,8 +74,10 @@ async function cargarClientes() {
   const contenedor = document.getElementById("contenedor");
   clientes.forEach((cliente) => {
     const item = document.createElement("div");
+    item.id = cliente.id_cliente; // Asigna un ID único basado en el cliente para cada
+    
     item.className = "cliente-item";
-    item.textContent = cliente.nombre;
+    item.textContent = cliente.nombre + " " + cliente.apellido + " - " + cliente.documento;
     contenedor.appendChild(item);
   });
 }

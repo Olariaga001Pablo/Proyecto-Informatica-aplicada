@@ -1,3 +1,5 @@
+# Database files
+*.sql
 # Node modules
 node_modules/
 # Logs
