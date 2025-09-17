@@ -2,7 +2,7 @@ import sqlite3 from 'sqlite3'; // Importa la librería
 
 // Crea o abre la base de datos. El segundo argumento es el modo de apertura.
 
-const db = new sqlite3.Database('./backend/db/DB_paneles.db', (err) => {
+const db = new sqlite3.Database('./backend/db/Paneles.db', (err) => {
   if (err) {
     console.error("Error al conectar a la base de datos:", err.message);
   } else {
@@ -12,7 +12,7 @@ const db = new sqlite3.Database('./backend/db/DB_paneles.db', (err) => {
 
 export const getClientes = () => {
   return new Promise((resolve, reject) => {
-    db.all("SELECT * FROM Clientes", (err, rows) => {
+    db.all("SELECT * FROM Cliente", (err, rows) => {
       if (err) {
         reject(err);
       } else {
