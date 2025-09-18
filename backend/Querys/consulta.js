@@ -6,7 +6,7 @@ const db = new sqlite3.Database('./backend/db/Paneles.db', (err) => {
   if (err) {
     console.error("Error al conectar a la base de datos:", err.message);
   } else {
-    console.log("Conexión a la base de datos 'DB_paneles.db' establecida exitosamente.");
+    console.log("Conexión a la base de datos 'Paneles.db' establecida exitosamente.");
   }
 });
 
