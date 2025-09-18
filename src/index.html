@@ -31,22 +31,23 @@
       </div>
 
       <div class="header-actions">
-        <img src="./public/icons/add-person.svg" alt="agregarCliente" class="icon-small" id="btn-add-cliente">
+        <a href="./pages/cliente/agregarCliente.html">
+          <img src="./public/icons/add-person.svg" alt="agregarCliente" class="icon-small">
+        </a>
         <img src="./public/icons/document-add.svg" alt="agregarProyecto" class="icon-small">
       </div>
     </header>
 
-    
-    <!-- Tarjetas-->
+    <!-- Tarjetas -->
     <section class="cards">
       <article class="card">
-        <div class="card-icon"><img src="./public/icons/line-md--account.svg" alt=""></div>
+        <div class="card-icon"><img src="./public/icons/line-md--account.svg" alt="clientes"></div>
         <div class="card-number" id="clientes-count">0</div>
         <div class="card-label">Clientes</div>
       </article>
 
       <article class="card">
-        <div class="card-icon"><img src="./public/icons/lineicons--clipboard.svg" alt=""></div>
+        <div class="card-icon"><img src="./public/icons/lineicons--clipboard.svg" alt="proyectos"></div>
         <div class="card-number">8</div>
         <div class="card-label">Proyectos Activos</div>
       </article>
@@ -55,14 +56,15 @@
     <script type="module">
       // Actualiza el contador de clientes en index.html
       document.addEventListener("DOMContentLoaded", async () => {
+        const contadorElement = document.getElementById("clientes-count");
         try {
           const clientes = await window.api.getClientes(); // Llama al backend
-          const contadorElement = document.getElementById("clientes-count");
           if (contadorElement) {
-            contadorElement.textContent = clientes.length; // Actualiza el número
+            contadorElement.textContent = clientes.length || "0"; // Actualiza el número
           }
         } catch (error) {
           console.error("Error al obtener clientes:", error);
+          if (contadorElement) contadorElement.textContent = "Error";
         }
       });
     </script>
