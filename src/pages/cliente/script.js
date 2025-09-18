@@ -66,7 +66,7 @@ async function createCliente() {
     direccion: document.getElementById("direccion")?.value || '',
     telefono: document.getElementById("telefono")?.value || '',
     email: document.getElementById("email")?.value || '',
-    id_usuario: document.getElementById("id_usuario")?.value || ''
+    codigo_postal: document.getElementById("codigo_postal")?.value || null
   };
 
   try {
