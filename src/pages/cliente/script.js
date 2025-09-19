@@ -36,7 +36,7 @@ function actualizarClientesCount(cantidad) {
   if (contador) contador.textContent = cantidad;
 }
 
-// Carga clientes en cliente.html
+// Carga clientes en cliente.html agrupados de a dos
 async function cargarClientes() {
   const contenedor = document.getElementById("contenedor");
   if (!contenedor) return;
@@ -45,12 +45,42 @@ async function cargarClientes() {
   actualizarClientesCount(clientes.length);
 
   contenedor.innerHTML = ""; // Limpiar antes de agregar
-  clientes.forEach(cliente => {
-    const item = document.createElement("div");
-    item.id = cliente.id_cliente;
-    item.className = "cliente-item";
-    item.textContent = `${cliente.nombre} ${cliente.apellido || ""} - ${cliente.documento}`;
-    contenedor.appendChild(item);
+
+  let fila; // Contenedor de la fila
+
+  clientes.forEach((cliente, index) => {
+    // Crear nueva fila cada 2 clientes
+    if (index % 2 === 0) {
+      fila = document.createElement("div");
+      fila.className = "clientes-fila";
+      contenedor.appendChild(fila);
+    }
+
+    const card = document.createElement("div");
+    card.className = "cliente-item"; // mantiene estilo de tarjeta individual
+    card.id = cliente.id_cliente;
+
+    card.innerHTML = `
+      <div class="cliente-info">
+        <h2 class="cliente-nombre">${cliente.nombre} ${cliente.apellido || ""}</h2>
+        <p class="cliente-email">${cliente.email || ""}</p>
+        <p class="cliente-telefono">${cliente.telefono || ""}</p>
+        <p class="cliente-direccion">${cliente.direccion || ""}</p>
+      </div>
+      <button class="btn-editar" data-id="${cliente.id_cliente}">
+        <img src="../../public/icons/content-modified.svg" alt="Editar">
+      </button>
+    `;
+
+    fila.appendChild(card); // agregar tarjeta a la fila
+  });
+
+  // Eventos para cada botón editar
+  document.querySelectorAll(".btn-editar").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const id = e.currentTarget.getAttribute("data-id");
+      window.location.href = `modificarCliente.html?id=${id}`;
+    });
   });
 }
 

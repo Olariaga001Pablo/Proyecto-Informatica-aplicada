@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modificar Cliente</title>
+  <link rel="stylesheet" href="clientes.css">
+</head>
+<body>
+  <div class="clientes-container">
+    
+    <!-- Encabezado -->
+    <div class="clientes-header">
+      <button class="btn-volver" onclick="window.history.back()">⟵</button>
+      <h1>Modificar Cliente</h1>
+    </div>
+
+    <!-- Formulario Modificar Cliente -->
+    <form class="form-agregar-cliente">
+      <input type="text" placeholder="Nombre completo" required>
+      <input type="email" placeholder="Correo electrónico" required>
+      <input type="tel" placeholder="Teléfono" required>
+      <input type="text" placeholder="Dirección" required>
+
+      <!-- Botones -->
+      <div class="form-botones">
+        <button type="button" class="btn-cancelar" onclick="window.history.back()">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+      </div>
+    </form>
+
+  </div>
+</body>
+</html>
