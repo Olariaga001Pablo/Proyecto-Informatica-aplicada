@@ -61,8 +61,17 @@ export const getClientes = () => {
 };
 // ...existing code...
 export const getClienteById = (id) => {
-  return db.prepare('SELECT * FROM Cliente WHERE id_cliente = ?').get(id);
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM Cliente WHERE id_cliente = ?', [id], (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row);
+      }
+    });   
+  });
 };
+
  const updateCliente = (id, data) => {
   const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
   const values = Object.values(data);
