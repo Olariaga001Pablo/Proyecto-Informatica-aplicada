@@ -74,6 +74,9 @@ async function cargarClientes() {
 
     fila.appendChild(card); // agregar tarjeta a la fila
   });
+  
+
+
 
   // Eventos para cada botón editar
   document.querySelectorAll(".btn-editar").forEach(btn => {
@@ -117,8 +120,13 @@ function initFormSubmit() {
   });
 }
 
+
+// Autocompletar campos en modificarCliente.html
+
 // ---------------------------- INICIALIZACIÓN ----------------------------
 document.addEventListener("DOMContentLoaded", async () => {
   await cargarClientes();  // Solo se ejecuta si hay contenedor
   initFormSubmit();        // Solo se ejecuta si hay formulario
+  // Solo se ejecuta si hay formulario de modificar
+  
 });

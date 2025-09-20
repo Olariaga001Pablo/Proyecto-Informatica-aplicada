@@ -60,8 +60,8 @@ export const getClientes = () => {
   });
 };
 // ...existing code...
- const getClienteById = (id) => {
-  return db.prepare('SELECT * FROM Clientes WHERE id_cliente = ?').get(id);
+export const getClienteById = (id) => {
+  return db.prepare('SELECT * FROM Cliente WHERE id_cliente = ?').get(id);
 };
  const updateCliente = (id, data) => {
   const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');

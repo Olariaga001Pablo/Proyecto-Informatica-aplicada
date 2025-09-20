@@ -1,5 +1,5 @@
 // Trae la función getClientes desde el archivo consulta.js
-import {getClientes, createCliente, createUsuario}  from '../backend/Querys/consulta.js';
+import {getClientes, createCliente, createUsuario, getClienteById}  from '../backend/Querys/consulta.js';
 // Módulos de Electron necesarios para ejecutar la aplicación
 import { BrowserWindow, app, ipcMain }  from 'electron';
 // Módulo path para manejar rutas de archivos
@@ -25,6 +25,10 @@ function createWindow() {
 // Manejdador IPC para comunicación entre el proceso principal y el proceso de renderizado
 ipcMain.handle("get-clientes", async () => {
     return await getClientes();
+});
+
+ipcMain.handle("get-clientes-by-id", async (event, id) => {
+    return await getClienteById(id);
 });
 
 ipcMain.handle("add-cliente", async (event, cliente) => {
