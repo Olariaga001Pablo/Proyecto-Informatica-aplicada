@@ -1,33 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
-<link rel="stylesheet" href="../cliente/style.css">
-<script type="module" src="./script.js"></script>
 <body>
-    <nav class="barra-de-navegacion-horizontal">
-        <div class="button-nav" id="home" onclick="cambiar()">
-            <img src="../../public/icons/lineicons--arrow-left.svg" alt="Icono" width="32" height="32">
-        </div>
-    </nav>
-    <div class="title">
-        <h1>Clientes</h1>
-    </div>
-    <nav class="nav-filtrar">
-        <div class="button-nav">
+  <div class="clientes-container">
+    <header class="clientes-header">
+      <button id="home" class="btn-volver">←</button>
+      <h1>Clientes</h1>
+      <button id="btn-add-cliente" class="btn-agregar">+ Agregar</button>
+    </header>
 
-            <div class="buscar">
-                <input type="search" id="buscar" placeholder="Buscar..." >
-            </div>
+    <!-- Contador -->
+    <p class="contador">Total de clientes: <span id="clientes-count">0</span></p>
 
-        </div>
-    </nav>
-    <section id="contenedor" class="container">
+    <!-- Contenedor dinámico donde script.js inyecta clientes -->
+    <main id="contenedor" class="clientes-lista">
+      <!-- Aquí se llenan las cards con cargarClientes() -->
+    </main>
+  </div>
+  
 
-    </section>
-    
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,133 @@
+/* ==== ESTILOS GENERALES ==== */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fef6fb; /* rosado suave */
+  color: #333;
+}
+
+/* ==== SIDEBAR ==== */
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin: 10px 0;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #333;
+  transition: background 0.2s;
+}
+
+.sidebar a:hover {
+  background: #f3e5f5;
+  border-radius: 8px;
+}
+
+.sidebar img {
+  width: 20px;
+  height: 20px;
+}
+
+/* ==== MAIN ==== */
+.main {
+  margin-left: 220px; /* espacio para el sidebar */
+  padding: 20px;
+}
+
+/* ==== HEADER ==== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ddd;
+}
+
+.greeting .name {
+  font-weight: bold;
+}
+
+.greeting .role {
+  font-size: 12px;
+  color: #777;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-small {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.icon-small:hover {
+  transform: scale(1.1);
+}
+
+/* ==== CARDS ==== */
+.cards {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  flex: 1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.card-icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.card-number {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.card-label {
+  font-size: 14px;
+  color: #666;
+}

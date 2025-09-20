@@ -6,7 +6,7 @@ const db = new sqlite3.Database('./backend/db/Paneles.db', (err) => {
   if (err) {
     console.error("Error al conectar a la base de datos:", err.message);
   } else {
-    console.log("Conexión a la base de datos 'DB_paneles.db' establecida exitosamente.");
+    console.log("Conexión a la base de datos 'Paneles.db' establecida exitosamente.");
   }
 });
 
@@ -48,9 +48,16 @@ export const getClientes = () => {
 
 /** CLIENTES **/
  export const createCliente = (cliente) => {
-  const stmt = db.prepare('INSERT INTO Clientes (nombre, documento, direccion, telefono, email, id_usuario) VALUES (?, ?, ?, ?, ?, ?)');
-  const info = stmt.run(cliente.nombre, cliente.documento, cliente.direccion, cliente.telefono, cliente.email, cliente.id_usuario);
-  return { ...cliente, id_cliente: info.lastInsertRowid };
+  return new Promise((resolve, reject) => {
+    try {
+      const stmt = db.prepare('INSERT INTO Cliente (nombre, apellido, documento, email, telefono, direccion, codigo_postal) VALUES (?, ?, ?, ?, ?, ?, ?)');
+      const info = stmt.run(cliente.nombre, cliente.apellido, cliente.documento, cliente.email, cliente.telefono, cliente.direccion, cliente.codigo_postal || null);
+      resolve({ ...cliente, id_cliente: info.lastInsertRowid });
+    } catch (err) {
+      console.error("Error al agregar cliente:", err.message);
+      reject(err);
+    }
+  });
 };
 // ...existing code...
  const getClienteById = (id) => {

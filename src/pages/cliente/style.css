@@ -1,78 +1,207 @@
-/* Estilos generales para el body */
-    body {
-        font-family: Arial, sans-serif; /* Fuente principal */
-        margin: 0; /* Elimina margen por defecto */
-        padding: 0; /* Elimina padding por defecto */
-        display: flex; /* Permite layout flexible vertical */
-        flex-direction: column; /* Apila los hijos verticalmente */
-        background-color: #fef7ff; /* Color de fondo suave */
-    }
-    /* Barra de navegación superior */
-    .barra-de-navegacion-horizontal {
-        background-color: #fef7ff; /* Fondo igual al body */
-        color: #fef7ff; /* No se usa, los hijos tienen color propio */
-        height: 60px; /* Altura fija */
-        display: flex; /* Layout horizontal */
-        flex-direction: row; /* Apila hijos horizontalmente */
-        align-items: center; /* Centra verticalmente los hijos */
-        padding: 10px 20px; /* Espaciado interno */
-        margin-bottom: 1px; /* Separación inferior mínima */
-    }
-    /* Título principal */
-    .title {
-        text-align: center; /* Centra el texto */
-        margin: 5px 0; /* Espaciado vertical */
-    }
-    .title h1 {
-        margin: 0; /* Elimina margen por defecto */
-        padding: 0; /* Elimina padding por defecto */
-        border: 0 ; /* Elimina borde por defecto (innecesario en h1) */
-        background-color: #fef7ff; /* Fondo igual al body */
-        color: dimgrey; /* Color del texto */
-    }
-    /* Barra de filtros y buscador */
-    .nav-filtrar {
-        display: flex; /* Layout flexible horizontal */
-        justify-content: flex-end; /* Alinea hijos a la derecha */
-        width: 100%; /* Ocupa todo el ancho disponible */
-        background-color: #fef7ff; /* Fondo igual al body */
-        color: #000000; /* Color de texto (no se usa directamente) */
-        height: 60px; /* Altura fija */
-        align-items: center; /* Centra verticalmente los hijos */
-        margin-bottom: 1px; /* Separación inferior mínima */
-    }
-    /* Contenedor principal de la sección de clientes */
-    .container {
-        display: flex; /* Layout flexible vertical */
-        flex-direction: column; /* Apila hijos verticalmente */
-        justify-content: center; /* Centra verticalmente (si hay espacio) */
-        padding: 20px; /* Espaciado interno */
-    }
-    /* Tarjeta de cliente individual */
-    .cliente-item {
-        background-color: #FFFFFF; /* Fondo blanco */
-        border: 1px solid #ddd; /* Borde gris claro */
-        border-radius: 5px; /* Esquinas redondeadas */
-        padding: 10px; /* Espaciado interno */
-        margin: 10px; /* Separación entre tarjetas */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    }
-    /* Input de búsqueda */
-    .buscar input[type="search"] {
-        gap: 5px; /* No tiene efecto en input, se puede eliminar */
-        border: 1px solid olive; /* Borde personalizado */
-        padding: 15px; /* Espaciado interno */
-        border-radius: 25px; /* Esquinas redondeadas */
-        background-image: url('../../public/icons/lineicons--search-1.svg'); /* Icono de búsqueda */
-        background-repeat: no-repeat; /* No repite el icono */
-        background-position: 10px center; /* Posiciona el icono a la izquierda */
-        max-width: 250px; /* Limita el ancho del input */
-        padding-left: 40px; /* Espacio para el icono */
-        margin-right: 30px; /* Separación del borde derecho */
-    }
-    .button-nav {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 20px;
-    }
+/* ==== ESTILOS DE CLIENTES ==== */
+body {
+  font-family: Arial, sans-serif;
+  background: #fef6fb; /* rosado suave */
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+/* Contenedor principal */
+.clientes-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* Encabezado */
+.clientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.clientes-header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Botón volver */
+.btn-volver {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+}
+.btn-volver:hover {
+  color: #000;
+}
+
+/* Botón agregar */
+.btn-agregar {
+  background: #7b1fa2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-agregar:hover {
+  background: #6a1b9a;
+}
+
+/* Contador */
+.contador {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* Lista de clientes (columnas de filas) */
+.clientes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Fila de dos clientes sin contorno */
+.clientes-fila {
+  display: flex;
+  gap: 20px;          /* espacio entre las tarjetas */
+  padding: 0;          /* sin padding extra */
+  margin-bottom: 20px; /* separación entre filas */
+  background: transparent; /* sin borde ni fondo */
+}
+
+/* Card cliente compacta con borde visible */
+.cliente-item {
+  background: #fff;
+  border: 2px solid #bbb; /* borde visible solo en la tarjeta */
+  border-radius: 12px;
+  padding: 14px;
+  transition: transform 0.15s ease, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1; /* para que dos tarjetas llenen la fila */
+}
+
+.cliente-item:hover {
+  transform: translateY(-3px);
+  border-color: #7b1fa2; /* resalta al pasar el mouse */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* Info del cliente */
+.cliente-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cliente-nombre {
+  font-size: 18px;
+  margin: 0;
+  color: #111;
+  font-weight: 600;
+}
+
+.cliente-meta {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.cliente-line {
+  margin-bottom: 4px;
+}
+
+/* Acciones */
+.cliente-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.btn-edit {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.btn-edit:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.icon-edit {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* ==== Formulario Agregar Cliente ==== */
+.form-agregar-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.form-agregar-cliente input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-agregar-cliente input:focus {
+  border-color: #7b1fa2;
+}
+
+/* Botones */
+.form-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-cancelar {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-cancelar:hover {
+  background: #ef9a9a;
+}
+
+.btn-guardar {
+  background: #c8e6c9;
+  color: #1b5e20;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-guardar:hover {
+  background: #a5d6a7;
+}
