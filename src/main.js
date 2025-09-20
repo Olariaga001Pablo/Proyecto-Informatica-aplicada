@@ -37,7 +37,9 @@ ipcMain.handle("add-cliente", async (event, cliente) => {
 ipcMain.handle("add-usuario", async (event, usuario) => {
     return await createUsuario(usuario);
 });
-
+ipcMain.on("log-message", (event, msg) => {
+    console.log("Log from renderer:", msg);
+});
 // Inicializa la aplicación cuando esté lista
 app.whenReady().then(createWindow).catch((error) => {
     console.error("An error occurred during app initialization:", error);

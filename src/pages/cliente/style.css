@@ -150,14 +150,14 @@ body {
 }
 
 /* ==== Formulario Agregar Cliente ==== */
-.form-agregar-cliente {
+.form-cliente {
   display: flex;
   flex-direction: column;
   gap: 14px;
   margin-top: 10px;
 }
 
-.form-agregar-cliente input {
+.form-cliente input {
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -166,7 +166,7 @@ body {
   transition: border-color 0.2s;
 }
 
-.form-agregar-cliente input:focus {
+.form-cliente input:focus {
   border-color: #7b1fa2;
 }
 
