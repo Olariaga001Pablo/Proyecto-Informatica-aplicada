@@ -72,13 +72,16 @@ export const getClienteById = (id) => {
   });
 };
 
- const updateCliente = (id, data) => {
-  const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
-  const values = Object.values(data);
-  const stmt = db.prepare(`UPDATE Clientes SET ${fields} WHERE id_cliente = ?`);
-  stmt.run(...values, id);
-  return getClienteById(id);
-};
+ export const updateCliente = (id, data) => {
+  return new Promise((resolve, reject) => {
+    const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
+    const values = Object.values(data);
+    const stmt = db.prepare(`UPDATE Cliente SET ${fields} WHERE id_cliente = ?`);
+    stmt.run(...values, id);
+    return getClienteById(id);
+  });
+}
+
  const deleteCliente = (id) => {
   db.prepare('DELETE FROM Clientes WHERE id_cliente = ?').run(id);
 };

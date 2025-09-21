@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modificar Cliente</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <div class="clientes-container">
@@ -16,7 +17,7 @@
     </div>
 
     <!-- Formulario Modificar Cliente -->
-    <form class="form-modificar-cliente">
+    <form class="form-cliente">
        <input type="text" id="mod-nombre" placeholder="Nombre" class="mod-nombre" required>
         <input type="text" id="mod-apellido" placeholder="Apellido" class="mod-apellido">
         <input type="text" id="mod-documento" placeholder="Documento" class="mod-documento" required>
@@ -28,7 +29,8 @@
       <!-- Botones -->
       <div class="form-botones">
         <button type="button" class="btn-cancelar" onclick="window.history.back()">Cancelar</button>
-        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+        <button type="button" class="btn-cancelar" id="btn-eliminar">Eliminar</button>
+        <button type="button" class="btn-guardar" id="btn-guardar">Guardar Cambios</button>
       </div>
     </form>
 
