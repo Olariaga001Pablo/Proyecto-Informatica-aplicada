@@ -82,8 +82,16 @@ export const updateCliente = (id, data) => {
   });
 }
 
- const deleteCliente = (id) => {
-  db.prepare('DELETE FROM Clientes WHERE id_cliente = ?').run(id);
+ export const deleteCliente = (id) => {
+  return new Promise((resolve, reject) => {
+    db.run('DELETE FROM Cliente WHERE id_cliente = ?', [id], function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
 };
 
 

@@ -157,6 +157,26 @@ function initFormSubmitModificar() {
     e.preventDefault();
     await updateCliente();
   }); 
+  const btnEliminar = document.getElementById("btn-eliminar");
+  btnEliminar?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await eliminarCliente();
+  });
+}
+
+async function eliminarCliente() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  if (!id) return console.log("ID no proporcionado para eliminar cliente");
+  try {
+
+    await window.api.deleteCliente(id);
+    console.log(`Cliente con ID ${id} eliminado`);
+    window.location.href = "cliente.html"; // Volver a la lista después de eliminar
+  } catch (error) {
+    console.error("Error al eliminar cliente:", error);
+  }
+
 }
 
 async function updateCliente() {
