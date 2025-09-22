@@ -120,7 +120,7 @@ async function cargarClientes() {
 // Crear cliente desde agregarCliente.html
 async function createCliente() {
   const form = document.getElementById("form-agregar-cliente");
-  if (!form) return;
+  if (!form) return console.error("formulario no encontrado");
 
   const nuevoCliente = {
     nombre: document.getElementById("nombre")?.value || '',
@@ -146,6 +146,7 @@ function initFormSubmit() {
   const form = document.getElementById("form-agregar-cliente");
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
+    console.log("se ejecuto el init")
     createCliente();
   });
 }
@@ -155,7 +156,6 @@ function initFormSubmitModificar() {
   form?.addEventListener("click", async (e) => {
     e.preventDefault();
     await updateCliente();
-    console.log("Formulario de modificar cliente enviado");
   }); 
 }
 
@@ -175,7 +175,10 @@ async function updateCliente() {
   };
 
   try {
-    await window.api.updateCliente(id, clienteActualizado);
+    window.api.updateCliente(id, clienteActualizado);
+    console.log("cliente actualizado")
+    window.location.href = "cliente.html";
+
     // Volver a la página anterior
   } catch (error) {
     console.error("Error al actualizar cliente:", error);
@@ -209,9 +212,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     obtenerIdCliente();
     console.log("En cliente.html");
 
-  } // Solo se ejecuta si hay contenedor
-  // Solo se ejecuta si hay formulario
-  // Solo se ejecuta si hay formulario de modificar
+  } 
+  if (pathname.includes("agregarCliente.html")) {
+    console.log("En agregarCliente.html");
+    initFormSubmit();
+  }
   if (pathname.includes("modificarCliente.html")) {
     console.log("En modificarCliente.html");
     const cliente = await obtenerClientePorId();

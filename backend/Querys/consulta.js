@@ -72,7 +72,7 @@ export const getClienteById = (id) => {
   });
 };
 
- export const updateCliente = (id, data) => {
+export const updateCliente = (id, data) => {
   return new Promise((resolve, reject) => {
     const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
     const values = Object.values(data);
