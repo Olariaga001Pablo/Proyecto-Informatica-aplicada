@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modificar Producto</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="clientes-container">
+    <div class="clientes-header">
+      <button class="btn-volver" onclick="window.history.back()">⟵</button>
+      <h1>Modificar Producto</h1>
+    </div>
+
+    <form class="form-cliente">
+      <input type="text" id="mod-nombre" placeholder="Nombre" required>
+      <input type="text" id="mod-tipo" placeholder="Tipo de Producto">
+      <input type="number" id="mod-precio" placeholder="Precio" step="0.01" required>
+      <input type="number" id="mod-stock" placeholder="Stock" required>
+      <select id="mod-proveedor" required>
+        <option value="">Seleccione un Proveedor</option>
+      </select>
+      <input type="number" id="mod-umbral-minimo" placeholder="Umbral Mínimo">
+
+      <div class="form-botones">
+        <button type="button" class="btn-cancelar" onclick="window.history.back()">Cancelar</button>
+        <button type="button" class="btn-cancelar" id="btn-eliminar">Eliminar</button>
+        <button type="button" class="btn-guardar" id="btn-guardar">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

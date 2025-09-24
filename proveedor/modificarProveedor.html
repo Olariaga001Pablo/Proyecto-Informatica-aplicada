@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modificar Proveedor</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="clientes-container">
+    <div class="clientes-header">
+      <button class="btn-volver" onclick="window.history.back()">⟵</button>
+      <h1>Modificar Proveedor</h1>
+    </div>
+
+    <form class="form-cliente">
+      <input type="text" id="mod-nombre" placeholder="Nombre" class="mod-nombre" required>
+      <input type="text" id="mod-direccion" placeholder="Dirección" class="mod-direccion">
+      <input type="text" id="mod-telefono" placeholder="Teléfono" class="mod-telefono">
+      <input type="email" id="mod-email" placeholder="Correo electrónico" class="mod-email">
+      <input type="text" id="mod-codigo_postal" placeholder="Código Postal" class="mod-codigo_postal">
+
+      <div class="form-botones">
+        <button type="button" class="btn-cancelar" onclick="window.history.back()">Cancelar</button>
+        <button type="button" class="btn-cancelar" id="btn-eliminar">Eliminar</button>
+        <button type="button" class="btn-guardar" id="btn-guardar">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
