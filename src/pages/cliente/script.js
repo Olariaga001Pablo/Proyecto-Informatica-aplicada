@@ -240,8 +240,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (pathname.includes("modificarCliente.html")) {
     console.log("En modificarCliente.html");
     const cliente = await obtenerClientePorId();
-    if ( cliente.length > 0) { // <--- Verificación corregida
-      rellenarFormulario(cliente[0]);
+    if ( cliente) { // <--- Verificación corregida
+      rellenarFormulario(cliente);
       console.log(cliente[0]);
 
     } else {
