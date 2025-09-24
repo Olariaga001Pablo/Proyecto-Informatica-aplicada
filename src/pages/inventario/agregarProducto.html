@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Producto</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="clientes-container">
+    <header class="clientes-header">
+      <button id="home" class="btn-volver">←</button>
+    </header>
+
+    <main>
+      <form id="form-agregar-producto" class="form-cliente">
+        <h2>Producto &gt; Añadir</h2>
+        <input type="text" id="nombre-producto" placeholder="Nombre" required>
+        <input type="text" id="tipo-producto" placeholder="Tipo de Producto">
+        <input type="number" id="precio-producto" placeholder="Precio" step="0.01" required>
+        <input type="number" id="stock-producto" placeholder="Stock" required>
+        <select id="proveedor-producto"  class="select-proveedor" required>
+          <option value="">Seleccione un Proveedor</option>
+        </select>
+        <input type="number" id="umbral-minimo" placeholder="Umbral Mínimo">
+
+        <div class="form-botones">
+          <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn-guardar">Guardar</button>
+        </div> 
+      </form>
+    </main>
+  </div>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>
