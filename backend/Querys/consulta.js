@@ -1,6 +1,4 @@
-import sqlite3 from 'sqlite3'; // Importa la librería
-
-// Crea o abre la base de datos. El segundo argumento es el modo de apertura.
+import sqlite3 from 'sqlite3';
 
 const db = new sqlite3.Database('./backend/db/Paneles.db', (err) => {
   if (err) {
@@ -10,65 +8,63 @@ const db = new sqlite3.Database('./backend/db/Paneles.db', (err) => {
   }
 });
 
+// ======================================
+// ===  FUNCIONES DE USUARIOS  ========
+// ======================================
+
+export const createUsuario = (usuario) => {
+  return new Promise((resolve, reject) => {
+    const stmt = db.prepare('INSERT INTO Usuarios (id_usuario, username, password_hash, rol) VALUES (?, ?, ?, ?)');
+    stmt.run(usuario.id_usuario, usuario.username, usuario.password_hash, usuario.rol, function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        console.log("Usuario creado con ID:", this.lastID);
+        resolve({ ...usuario, id_usuario: this.lastID });
+      }
+    });
+  });
+};
+
+// ======================================
+// ===  FUNCIONES DE CLIENTES  ========
+// ======================================
+
 export const getClientes = () => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM Cliente", (err, rows) => {
       if (err) {
         reject(err);
       } else {
-        resolve(rows);
         console.log("Clientes obtenidos:", rows);
+        resolve(rows);
       }
     });
   });
 };
 
-/** USUARIOS **/
- export const createUsuario = (usuario) => {
-  const stmt = db.prepare('INSERT INTO Usuarios (id_usuario, username, password_hash, rol) VALUES (?,?, ?, ?)');
-  const info = stmt.run(usuario.id_usuario, usuario.username, usuario.password_hash, usuario.rol);
-  console.log("Usuario creado con ID:", usuario.id_usuario);
-  return { ...usuario, id_usuario: info.lastInsertRowid } && getClientes();
-};
- const getUsuarios = () => {
-  return db.prepare('SELECT * FROM Usuarios').all();
-};
- const getUsuarioById = (id) => {
-  return db.prepare('SELECT * FROM Usuarios WHERE id_usuario = ?').get(id);
-};
- const updateUsuario = (id, rol) => {
-  const stmt = db.prepare('UPDATE Usuarios SET rol = ? WHERE id_usuario = ?');
-  stmt.run(rol, id);
-  return getUsuarioById(id);
-};
- const deleteUsuario = (id) => {
-  db.prepare('DELETE FROM Usuarios WHERE id_usuario = ?').run(id);
-};
-
-
-/** CLIENTES **/
- export const createCliente = (cliente) => {
+export const createCliente = (cliente) => {
   return new Promise((resolve, reject) => {
-    try {
-      const stmt = db.prepare('INSERT INTO Cliente (nombre, apellido, documento, email, telefono, direccion, codigo_postal) VALUES (?, ?, ?, ?, ?, ?, ?)');
-      const info = stmt.run(cliente.nombre, cliente.apellido, cliente.documento, cliente.email, cliente.telefono, cliente.direccion, cliente.codigo_postal || null);
-      resolve({ ...cliente, id_cliente: info.lastInsertRowid });
-    } catch (err) {
-      console.error("Error al agregar cliente:", err.message);
-      reject(err);
-    }
+    const stmt = db.prepare('INSERT INTO Cliente (nombre, apellido, documento, email, telefono, direccion, codigo_postal) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    stmt.run(cliente.nombre, cliente.apellido, cliente.documento, cliente.email, cliente.telefono, cliente.direccion, cliente.codigo_postal || null, function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ ...cliente, id_cliente: this.lastID });
+      }
+    });
   });
 };
-// ...existing code...
+
 export const getClienteById = (id) => {
   return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM Cliente WHERE id_cliente = ?', [id], (err, row) => {
+    db.get('SELECT * FROM Cliente WHERE id_cliente = ?', [id], (err, row) => {
       if (err) {
         reject(err);
       } else {
         resolve(row);
       }
-    });   
+    });
   });
 };
 
@@ -76,134 +72,153 @@ export const updateCliente = (id, data) => {
   return new Promise((resolve, reject) => {
     const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
     const values = Object.values(data);
-    const stmt = db.prepare(`UPDATE Cliente SET ${fields} WHERE id_cliente = ?`);
-    stmt.run(...values, id);
-    return getClienteById(id);
-  });
-}
-
- export const deleteCliente = (id) => {
-  return new Promise((resolve, reject) => {
-    db.run('DELETE FROM Cliente WHERE id_cliente = ?', [id], function(err) {
+    db.run(`UPDATE Cliente SET ${fields} WHERE id_cliente = ?`, [...values, id], function(err) {
       if (err) {
         reject(err);
       } else {
-        resolve();
+        resolve({ changes: this.changes });
       }
     });
   });
 };
 
+// ======================================
+// ===  FUNCIONES DE PROVEEDORES  ========
+// ======================================
 
-
-/** PROYECTOS **/
-export const createProyecto = (proyecto) => {
-  const stmt = db.prepare('INSERT INTO Proyectos (id_cliente, ubicacion, tipo_panel, cantidad_paneles, estado, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?, ?, ?, ?)');
-  const info = stmt.run(proyecto.id_cliente, proyecto.ubicacion, proyecto.tipo_panel, proyecto.cantidad_paneles, proyecto.estado, proyecto.fecha_inicio, proyecto.fecha_fin);
-  return { ...proyecto, id_proyecto: info.lastInsertRowid };
-};
-export const getProyectos = () => {
-  return db.prepare('SELECT * FROM Proyectos').all();
-};
-export const getProyectosByCliente = (id_cliente) => {
-  return db.prepare('SELECT * FROM Proyectos WHERE id_cliente = ?').all(id_cliente);
-};
-export const getProyectoById = (id) => {
-  return db.prepare('SELECT * FROM Proyectos WHERE id_proyecto = ?').get(id);
-};
-export const updateProyectoEstado = (id, estado) => {
-  const stmt = db.prepare('UPDATE Proyectos SET estado = ? WHERE id_proyecto = ?');
-  stmt.run(estado, id);
-  return getProyectoById(id);
-};
-export const deleteProyecto = (id) => {
-  db.prepare('DELETE FROM Proyectos WHERE id_proyecto = ?').run(id);
+export const getProveedores = () => {
+  return new Promise((resolve, reject) => {
+    db.all("SELECT * FROM Proveedor", (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
 };
 
+export const guardarProveedor = (proveedor) => {
+  return new Promise((resolve, reject) => {
+    const stmt = db.prepare('INSERT INTO Proveedor (nombre, email, telefono, direccion, codigo_postal) VALUES (?, ?, ?, ?, ?)');
+    stmt.run(proveedor.nombre, proveedor.email, proveedor.telefono, proveedor.direccion, proveedor.codigo_postal, function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ ...proveedor, id_proveedor: this.lastID });
+      }
+    });
+  });
+};
 
-// /** INVENTARIO **/
-// export const createProducto = (producto: Omit<Inventario, 'id_producto'>): Inventario => {
-//   const stmt = db.prepare('INSERT INTO Inventario (nombre_producto, tipo_producto, cantidad_disponible, stock_minimo) VALUES (?, ?, ?, ?)');
-//   const info = stmt.run(producto.nombre_producto, producto.tipo_producto, producto.cantidad_disponible, producto.stock_minimo);
-//   return { ...producto, id_producto: info.lastInsertRowid as number };
-// };
-// export const getInventario = (): Inventario[] => {
-//   return db.prepare('SELECT * FROM Inventario').all() as Inventario[];
-// };
-// export const getProductoById = (id: number): Inventario | undefined => {
-//   return db.prepare('SELECT * FROM Inventario WHERE id_producto = ?').get(id) as Inventario | undefined;
-// };
-// export const updateCantidadProducto = (id: number, cantidad: number): Inventario | undefined => {
-//   const stmt = db.prepare('UPDATE Inventario SET cantidad_disponible = ? WHERE id_producto = ?');
-//   stmt.run(cantidad, id);
-//   return getProductoById(id);
-// };
-// export const deleteProducto = (id: number): void => {
-//   db.prepare('DELETE FROM Inventario WHERE id_producto = ?').run(id);
-// };
+export const getProveedorById = (id) => {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT * FROM Proveedor WHERE id_proveedor = ?', [id], (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row);
+      }
+    });
+  });
+};
 
+export const updateProveedor = (id, data) => {
+  return new Promise((resolve, reject) => {
+    const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
+    const values = Object.values(data);
+    db.run(`UPDATE Proveedor SET ${fields} WHERE id_proveedor = ?`, [...values, id], function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ changes: this.changes });
+      }
+    });
+  });
+};
 
-// /** MOVIMIENTOS DE INVENTARIO **/
-// export const createMovimiento = (movimiento: Omit<MovimientoInventario, 'id_movimiento'>): MovimientoInventario => {
-//   const stmt = db.prepare('INSERT INTO MovimientosInventario (id_producto, tipo_movimiento, cantidad, fecha) VALUES (?, ?, ?, ?)');
-//   const info = stmt.run(movimiento.id_producto, movimiento.tipo_movimiento, movimiento.cantidad, movimiento.fecha);
-//   return { ...movimiento, id_movimiento: info.lastInsertRowid as number };
-// };
-// export const getMovimientos = (): MovimientoInventario[] => {
-//   return db.prepare('SELECT * FROM MovimientosInventario').all() as MovimientoInventario[];
-// };
-// export const getMovimientosByProducto = (id_producto: number): MovimientoInventario[] => {
-//   return db.prepare('SELECT * FROM MovimientosInventario WHERE id_producto = ?').all(id_producto) as MovimientoInventario[];
-// };
+export const eliminarProveedor = (id) => {
+  return new Promise((resolve, reject) => {
+    db.run('DELETE FROM Proveedor WHERE id_proveedor = ?', id, function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ changes: this.changes });
+      }
+    });
+  });
+};
 
+// ======================================
+// ===  FUNCIONES DE INVENTARIO  ========
+// ======================================
 
-// /** FACTURAS **/
-// export const createFactura = (factura: Omit<Factura, 'id_factura'>): Factura => {
-//   const stmt = db.prepare('INSERT INTO Facturas (id_cliente, id_proyecto, fecha, monto_total) VALUES (?, ?, ?, ?)');
-//   const info = stmt.run(factura.id_cliente, factura.id_proyecto, factura.fecha, factura.monto_total);
-//   return { ...factura, id_factura: info.lastInsertRowid as number };
-// };
-// export const getFacturas = (): Factura[] => {
-//   return db.prepare('SELECT * FROM Facturas').all() as Factura[];
-// };
-// export const getFacturasByCliente = (id_cliente: number): Factura[] => {
-//   return db.prepare('SELECT * FROM Facturas WHERE id_cliente = ?').all(id_cliente) as Factura[];
-// };
-// export const updateFactura = (id: number, data: Partial<Omit<Factura, 'id_factura'>>): Factura | undefined => {
-//   const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
-//   const values = Object.values(data);
-//   const stmt = db.prepare(`UPDATE Facturas SET ${fields} WHERE id_factura = ?`);
-//   stmt.run(...values, id);
-//   return getFacturaById(id);
-// };
-// export const deleteFactura = (id: number): void => {
-//   db.prepare('DELETE FROM Facturas WHERE id_factura = ?').run(id);
-// };
+export const getInventario = () => {
+  return new Promise((resolve, reject) => {
+    db.all("SELECT P.*, Pr.nombre AS proveedor_nombre FROM Producto P LEFT JOIN Proveedor Pr ON P.id_proveedor = Pr.id_proveedor", (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+};
 
+export const guardarProducto = (producto) => {
+  return new Promise((resolve, reject) => {
+    const stmt = db.prepare('INSERT INTO Producto (nombre, tipo, precio, stock, id_proveedor) VALUES (?, ?, ?, ?, ?)');
+    stmt.run(
+      producto.nombre,
+      producto.tipo,
+      producto.precio,
+      producto.stock,
+      producto.proveedor,
+      function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ ...producto, id_producto: this.lastID });
+        }
+      }
+    );
+  });
+};
 
-// /** PAGOS **/
-// export const createPago = (pago: Omit<Pago, 'id_pago'>): Pago => {
-//   const stmt = db.prepare('INSERT INTO Pagos (id_factura, fecha_pago, monto) VALUES (?, ?, ?)');
-//   const info = stmt.run(pago.id_factura, pago.fecha_pago, pago.monto);
-//   return { ...pago, id_pago: info.lastInsertRowid as number };
-// };
-// export const getPagos = (): Pago[] => {
-//   return db.prepare('SELECT * FROM Pagos').all() as Pago[];
-// };
-// export const getPagosByFactura = (id_factura: number): Pago[] => {
-//   return db.prepare('SELECT * FROM Pagos WHERE id_factura = ?').all(id_factura) as Pago[];
-// };
+export const getProductoById = (id) => {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT P.*, Pr.nombre AS proveedor_nombre FROM Producto P LEFT JOIN Proveedor Pr ON P.id_proveedor = Pr.id_proveedor WHERE P.id_producto = ?', [id], (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row);
+      }
+    });
+  });
+};
 
+export const updateProducto = (id, data) => {
+  return new Promise((resolve, reject) => {
+    const fields = Object.keys(data).map(key => `${key} = ?`).join(', ');
+    const values = Object.values(data);
+    db.run(`UPDATE Producto SET ${fields} WHERE id_producto = ?`, [...values, id], function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ changes: this.changes });
+      }
+    });
+  });
+};
 
-// /** SIMULACIONES **/
-// export const createSimulacion = (simulacion: Omit<Simulacion, 'id_simulacion'>): Simulacion => {
-//   const stmt = db.prepare('INSERT INTO Simulaciones (id_proyecto, rendimiento_estimado, ahorro_estimado, fecha) VALUES (?, ?, ?, ?)');
-//   const info = stmt.run(simulacion.id_proyecto, simulacion.rendimiento_estimado, simulacion.ahorro_estimado, simulacion.fecha);
-//   return { ...simulacion, id_simulacion: info.lastInsertRowid as number };
-// };
-// export const getSimulaciones = (): Simulacion[] => {
-//   return db.prepare('SELECT * FROM Simulaciones').all() as Simulacion[];
-// };
-// export const getSimulacionesByProyecto = (id_proyecto: number): Simulacion[] => {
-//   return db.prepare('SELECT * FROM Simulaciones WHERE id_proyecto = ?').all(id_proyecto) as Simulacion[];
-// };
+export const eliminarProducto = (id) => {
+  return new Promise((resolve, reject) => {
+    db.run('DELETE FROM Producto WHERE id_producto = ?', id, function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ changes: this.changes });
+      }
+    });
+  });
+};

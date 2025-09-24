@@ -1,28 +1,48 @@
-// Trae la función getClientes desde el archivo consulta.js
-import {getClientes, createCliente, createUsuario, getClienteById, updateCliente, deleteCliente}  from '../backend/Querys/consulta.js';
-// Módulos de Electron necesarios para ejecutar la aplicación
-import { BrowserWindow, app, ipcMain }  from 'electron';
-// Módulo path para manejar rutas de archivos
+// main.js
+
+import {
+    // Funciones de Clientes (ya estaban)
+    getClientes, 
+    createCliente, 
+    createUsuario, 
+    getClienteById, 
+    updateCliente,
+    
+    // Funciones de Inventario
+    getInventario,
+    guardarProducto,
+    getProductoById as getProductoByIdInv,
+    eliminarProducto,
+    updateProducto as updateProductoInv,
+
+    // Funciones de Proveedores 
+    getProveedores,
+    guardarProveedor,
+    getProveedorById,
+    updateProveedor,
+    eliminarProveedor
+} from '../backend/Querys/consulta.js';
+
+import { BrowserWindow, app, ipcMain } from 'electron';
 import path from 'path';
-// Módulos para manejar rutas de archivos en ES Modules
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Función para crear la ventana principal de la aplicación
 function createWindow() {
     const win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js') // Usa path.join aquí        
+            preload: path.join(__dirname, 'preload.js')
         }
     });
+
     win.loadFile('./src/index.html');
 }
 
-// Manejdador IPC para comunicación entre el proceso principal y el proceso de renderizado
+// Manejadores IPC para la comunicación de Clientes
 ipcMain.handle("get-clientes", async () => {
     return await getClientes();
 });
@@ -34,18 +54,62 @@ ipcMain.handle("get-clientes-by-id", async (event, id) => {
 ipcMain.handle("add-cliente", async (event, cliente) => {
     return await createCliente(cliente);
 });
+
 ipcMain.handle("add-usuario", async (event, usuario) => {
     return await createUsuario(usuario);
 });
-ipcMain.on("log-message", (event, msg) => {
-    console.log("Log from renderer:", msg);
-});
+
 ipcMain.handle("update-cliente", async (event, id, data) => {
     return await updateCliente(id, data);
 });
-ipcMain.handle("delete-cliente", async (event, id) => {
-    return await deleteCliente(id);
+
+// Manejadores IPC para la comunicación de Proveedores (¡NUEVOS!)
+ipcMain.handle("get-proveedores", async () => {
+    return await getProveedores();
 });
+
+ipcMain.handle("get-proveedor-by-id", async (event, id) => {
+    return await getProveedorById(id);
+});
+
+ipcMain.handle("add-proveedor", async (event, proveedor) => {
+    return await guardarProveedor(proveedor);
+});
+
+ipcMain.handle("update-proveedor", async (event, id, data) => {
+    return await updateProveedor(id, data);
+});
+
+ipcMain.handle("delete-proveedor", async (event, id) => {
+    return await eliminarProveedor(id);
+});
+
+// Manejadores IPC para la comunicación de Inventario (¡AGREGADO LO FALTANTE!)
+ipcMain.handle("get-inventario", async () => {
+    return await getInventario();
+});
+
+ipcMain.handle("guardar-producto", async (event, producto) => {
+    return await guardarProducto(producto);
+});
+
+ipcMain.handle("get-producto-by-id", async (event, id) => {
+    return await getProductoByIdInv(id);
+});
+
+ipcMain.handle("eliminar-producto", async (event, id) => {
+    return await eliminarProducto(id);
+});
+
+ipcMain.handle("update-producto", async (event, id, data) => {
+    return await updateProductoInv(id, data);
+});
+
+// Mensajes de log para depuración
+ipcMain.on("log-message", (event, msg) => {
+    console.log("Log from renderer:", msg);
+});
+
 // Inicializa la aplicación cuando esté lista
 app.whenReady().then(createWindow).catch((error) => {
     console.error("An error occurred during app initialization:", error);
