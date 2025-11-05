@@ -14,9 +14,11 @@
 
     <main>
       <form id="form-agregar-producto" class="form-cliente">
+        <div id="mensaje-error-duplicado" style="color: red; display: none; margin-bottom: 15px;">
+        </div>
         <h2>Producto &gt; Añadir</h2>
         <input type="text" id="nombre-producto" placeholder="Nombre" required>
-        <input type="text" id="tipo-producto" placeholder="Tipo de Producto">
+        <input type="text" id="tipo-producto" placeholder="Tipo de Producto" required>
         <input type="number" id="precio-producto" placeholder="Precio" step="0.01" required>
         <input type="number" id="stock-producto" placeholder="Stock" required>
         <select id="proveedor-producto"  class="select-proveedor" required>

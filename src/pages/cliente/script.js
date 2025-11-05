@@ -117,6 +117,58 @@ async function cargarClientes() {
 
 }
 
+function mostrarError(mensaje) {
+    const errorDiv = document.getElementById("mensaje-error-duplicado");
+    if (errorDiv) {
+        // Establecer el contenido
+        errorDiv.textContent = mensaje;
+        
+        // Agregar la clase CSS y mostrar el elemento
+        errorDiv.classList.add('error-notification'); 
+        errorDiv.style.display = 'flex'; // Usamos 'flex' si el CSS usa display: flex
+        // Desplazarse al mensaje de error
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+
+function limpiarError() {
+    const errorDiv = document.getElementById("mensaje-error-duplicado");
+    if (errorDiv) {
+        errorDiv.textContent = '';
+        errorDiv.style.display = 'none'; // Ocultar el elemento
+    }
+}
+async function validarExistenciaCliente(cliente) {
+  try {
+    const listaDeClientes = await window.api.getClientes();
+    
+    // 1. Verificar Duplicado por Documento
+    if (listaDeClientes.some(c => c.documento === cliente.documento)) {
+      console.log("Validación de existencia: Documento duplicado.");
+      return "documento"; 
+    }
+
+    // 2. Verificar Duplicado por Teléfono
+    if (listaDeClientes.some(c => c.telefono === cliente.telefono)) {
+      console.log("Validación de existencia: Teléfono duplicado.");
+      return "telefono";
+    }
+
+    // 3. Verificar Duplicado por Email
+    if (listaDeClientes.some(c => c.email === cliente.email)) {
+      console.log("Validación de existencia: Email duplicado.");
+      return "email";
+    }
+
+    // Si no se encontró ningún duplicado
+    console.log("Validación de existencia del cliente: No existe.");
+    return false; // No hay duplicados
+
+  } catch (error) {
+    console.error("Error al validar existencia del cliente:", error);
+    return false;
+  }
+}
 // Crear cliente desde agregarCliente.html
 async function createCliente() {
   const form = document.getElementById("form-agregar-cliente");
@@ -131,14 +183,39 @@ async function createCliente() {
     email: document.getElementById("email")?.value || '',
     codigo_postal: document.getElementById("codigo_postal")?.value || null
   };
+  
+ const campoDuplicado = await validarExistenciaCliente(nuevoCliente); 
+
+  if (campoDuplicado) {
+    let mensaje = "Ya existe un cliente con el mismo ";
+    
+    // Construir el mensaje específico
+    switch (campoDuplicado) {
+      case "documento":
+        mensaje += "DOCUMENTO.";
+        break;
+      case "telefono":
+        mensaje += "TELÉFONO.";
+        break;
+      case "email":
+        mensaje += "EMAIL.";
+        break;
+      default:
+        mensaje += "dato (desconocido)."; // Manejo de errores
+    }
+    mostrarError(mensaje);
+    return; // Detener la creación del cliente
+  }
 
   try {
-    await window.api.addCliente(nuevoCliente);
+    const clienteCreado = await window.api.addCliente(nuevoCliente);
+    console.log("Cliente creado:", clienteCreado);
     // Redirigir a la lista después de guardar
     window.location.href = "cliente.html";
   } catch (error) {
     console.error("Error al crear cliente:", error);
   }
+
 }
 
 // Inicializa el formulario de agregar cliente
@@ -193,6 +270,8 @@ async function updateCliente() {
     email: document.getElementById("mod-email")?.value || '',
     codigo_postal: document.getElementById("mod-codigo_postal")?.value || null
   };
+
+  const documentoExistente = await getClienteById(id);
 
   try {
     window.api.updateCliente(id, clienteActualizado);

@@ -68,6 +68,48 @@ function actualizarProductosCount(cantidad) {
   const contador = document.getElementById("productos-count");
   if (contador) contador.textContent = cantidad;
 }
+// Función reescrita usando async/await
+async function validarDuplicadosProducto(nombre, proveedor, tipo) {
+  try {
+    // Usamos await para esperar el resultado de la promesa
+    const productos = await getProductos(); 
+    const proveedorNombre = proveedor ? (await window.proveedorAPI.getProveedorById(proveedor))?.nombre : null;
+    
+    // Si obtenemos la lista, realizamos la validación
+    const validacion = productos.some(producto => 
+      producto.nombre === nombre && 
+      producto.proveedor_nombre === proveedorNombre &&
+      producto.tipo === tipo
+    );
+    return validacion ; // true si es duplicado, false si no lo es
+  } catch (error) {
+    // Si hay un error al obtener los productos (ej: error de API/DB)
+    console.error("Error al obtener la lista de productos para validación:", error);
+  
+  }
+}
+
+function mostrarError(mensaje) {
+    const errorDiv = document.getElementById("mensaje-error-duplicado");
+    if (errorDiv) {
+        // Establecer el contenido
+        errorDiv.textContent = mensaje;
+        
+        // Agregar la clase CSS y mostrar el elemento
+        errorDiv.classList.add('error-notification'); 
+        errorDiv.style.display = 'flex'; // Usamos 'flex' si el CSS usa display: flex
+        // Desplazarse al mensaje de error
+        errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+
+function limpiarError() {
+    const errorDiv = document.getElementById("mensaje-error-duplicado");
+    if (errorDiv) {
+        errorDiv.textContent = '';
+        errorDiv.style.display = 'none'; // Ocultar el elemento
+    }
+}
 
 // Carga productos en inventario.html
 async function cargarProductos() {
@@ -98,7 +140,7 @@ async function cargarProductos() {
         <p class="cliente-email">Tipo: ${producto.tipo || ""}</p>
         <p class="cliente-telefono">Stock: ${producto.stock || 0}</p>
         <p class="cliente-direccion">Precio: $${producto.precio || 0}</p>
-        <p class="cliente-proveedor">Proveedor: ${producto.proveedor || ""}</p>
+        <p class="cliente-proveedor">Proveedor: ${producto.proveedor_nombre || ""}</p>
       </div>
       <button class="btn-editar" id="btn-editar" value="${producto.id_producto}">
         <img src="../../public/icons/content-modified.svg" alt="Editar">
@@ -114,6 +156,7 @@ async function cargarProductos() {
 async function createProducto() {
   const form = document.getElementById("form-agregar-producto");
   if (!form) return;
+  limpiarError();
 
   const nuevoProducto = {
     nombre: document.getElementById("nombre-producto")?.value || '',
@@ -123,7 +166,12 @@ async function createProducto() {
     proveedor: parseInt(document.getElementById("proveedor-producto")?.value) || null,
     umbral: parseInt(document.getElementById("umbral-minimo")?.value) || 0
   };
-
+  // Validar duplicados antes de guardar
+  const esDuplicado = await validarDuplicadosProducto(nuevoProducto.nombre, nuevoProducto.proveedor, nuevoProducto.tipo);
+  if (esDuplicado) {
+    mostrarError("Error: Ya existe un producto con el mismo NOMBRE, TIPO y PROVEEDOR.");
+    return; // Detener la creación si es duplicado
+  }
   try {
     await window.inventarioAPI.guardarProducto(nuevoProducto);
     window.location.href = "inventario.html";

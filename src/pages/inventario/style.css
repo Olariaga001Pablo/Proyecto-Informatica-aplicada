@@ -219,3 +219,34 @@ body {
   background: #a5d6a7;
 }
 
+
+.error-notification {
+    /* Ocultar por defecto */
+    display: none; 
+    
+    /* Colores y fondo (para errores) */
+    background-color: #fce4e4; /* Fondo rojo muy claro */
+    color: #c00000;          /* Texto rojo oscuro */
+    border: 1px solid #c00000; /* Borde rojo */
+    
+    /* Espaciado y tipografía */
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: bold; /* Hace que el mensaje se destaque */
+    
+    /* Bordes y sombra */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    
+    /* Estructura (para posible icono) */
+    display: flex;
+    align-items: center;
+}
+
+/* Opcional: Estilo para un ícono */
+.error-notification::before {
+    content: '⚠️'; /* Ícono de advertencia (o puedes usar FontAwesome) */
+    font-size: 1.2em;
+    margin-right: 10px;
+}

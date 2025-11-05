@@ -14,12 +14,14 @@
 
     <main>
       <form id="form-agregar-proveedor" class="form-cliente">
+         <div id="mensaje-error-duplicado" style="color: red; display: none; margin-bottom: 15px;">
+        </div>
         <h2>Proveedor &gt; Añadir</h2>
         <input type="text" id="nombre" placeholder="Nombre" required>
-        <input type="text" id="direccion" placeholder="Dirección">
-        <input type="text" id="telefono" placeholder="Teléfono">
-        <input type="email" id="email" placeholder="Correo electrónico">
-        <input type="text" id="codigo_postal" placeholder="Código Postal">
+        <input type="text" id="direccion" placeholder="Dirección" required>
+        <input type="text" id="telefono" placeholder="Teléfono" required>
+        <input type="email" id="email" placeholder="Correo electrónico" required>
+        <input type="text" id="codigo_postal" placeholder="Código Postal" required>
 
         <div class="form-botones">
           <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
