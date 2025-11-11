@@ -197,10 +197,16 @@ function initFormSubmitModificar() {
     await updateProducto();
   });
 
-  btnEliminar?.addEventListener("click", async (e) => {
-    e.preventDefault();
-    await deleteProducto();
-  });
+  btnEliminar?.addEventListener("click", (e) => {
+  e.preventDefault();
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  if (id) {
+    window.location.href = `eliminarProducto.html?id=${id}`;
+  } else {
+    alert("No se encontró el producto para eliminar.");
+  }
+});
 }
 
 async function updateProducto() {
@@ -295,4 +301,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     initFormSubmitModificar();
   }
+  if (pathname.includes("eliminarProducto.html")) {
+  console.log("En eliminarProducto.html");
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  document.getElementById("btn-cancelar")?.addEventListener("click", () => {
+    window.history.back();
+  });
+
+  const form = document.getElementById("form-eliminar-producto");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      await window.inventarioAPI.eliminarProducto(id);
+      alert("Producto eliminado correctamente.");
+      window.location.href = "inventario.html";
+    } catch (error) {
+      console.error("Error al eliminar producto:", error);
+      alert("No se pudo eliminar el producto.");
+    }
+  });
+}
 });

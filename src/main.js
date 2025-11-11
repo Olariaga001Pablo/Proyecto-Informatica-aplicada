@@ -7,6 +7,7 @@ import {
     createUsuario, 
     getClienteById, 
     updateCliente,
+    eliminarCliente,
     
     
     // Funciones de Inventario
@@ -62,6 +63,16 @@ ipcMain.handle("add-usuario", async (event, usuario) => {
 
 ipcMain.handle("update-cliente", async (event, id, data) => {
     return await updateCliente(id, data);
+});
+
+ipcMain.handle("delete-cliente", async (event, id) => {
+    try {
+        const result = await eliminarCliente(id);
+        return result;
+    } catch (error) {
+        console.error("Error al eliminar cliente:", error);
+        throw error;
+    }
 });
 
 // Manejadores IPC para la comunicación de Proveedores (¡NUEVOS!)

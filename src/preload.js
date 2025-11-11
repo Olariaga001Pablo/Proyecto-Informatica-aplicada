@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld("api", {
   getClienteById: (id) => ipcRenderer.invoke("get-clientes-by-id", id),
   addCliente: (cliente) => ipcRenderer.invoke("add-cliente", cliente),
   updateCliente: (id, data) => ipcRenderer.invoke("update-cliente", id, data),
+  deleteCliente: (id) => ipcRenderer.invoke("delete-cliente", id),
   addUsuario: (usuario) => ipcRenderer.invoke("add-usuario", usuario),
   logToMain: (msg) => ipcRenderer.send("log-message", msg)
 });

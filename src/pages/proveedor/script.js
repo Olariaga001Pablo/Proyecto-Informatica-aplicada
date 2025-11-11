@@ -144,10 +144,14 @@ function initFormSubmitModificar() {
     await updateProveedor();
   });
 
-  btnEliminar?.addEventListener("click", async (e) => {
-    e.preventDefault();
-    await deleteProveedor();
-  });
+  btnEliminar?.addEventListener("click", (e) => {
+  e.preventDefault();
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  if (id) {
+    window.location.href = `eliminarProveedor.html?id=${id}`;
+  }
+});
 }
 
 async function updateProveedor() {
@@ -173,22 +177,20 @@ async function updateProveedor() {
   }
 }
 
-async function deleteProveedor() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+async function deleteProveedor(id) {
   if (!id) {
     console.error("ID de proveedor no proporcionado en la URL");
     return;
   }
-  if (confirm("¿Estás seguro de que quieres eliminar este proveedor?")) {
-    try {
-      await window.proveedorAPI.deleteProveedor(id);
-      window.location.href = "proveedor.html";
-    } catch (error) {
-      console.error("Error al eliminar proveedor:", error);
-    }
+
+  try {
+    await window.proveedorAPI.deleteProveedor(id);
+    window.location.href = "proveedor.html";
+  } catch (error) {
+    console.error("Error al eliminar proveedor:", error);
   }
 }
+
 
 function rellenarFormulario(proveedor) {
   if (proveedor) {
@@ -218,5 +220,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("No se encontró el proveedor - ID inválido");
     }
     initFormSubmitModificar();
+  }
+  if (pathname.includes("eliminarProveedor.html")) {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    document.getElementById("cancelar-eliminar")?.addEventListener("click", () => {
+      window.history.back();
+    });
+
+    document.getElementById("confirmar-eliminar")?.addEventListener("click", async () => {
+      if (id) {
+        await deleteProveedor(id);
+      }
+    });
   }
 });
