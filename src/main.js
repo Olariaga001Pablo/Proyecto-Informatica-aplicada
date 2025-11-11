@@ -22,7 +22,14 @@ import {
     guardarProveedor,
     getProveedorById,
     updateProveedor,
-    eliminarProveedor
+    eliminarProveedor,
+
+    // Funciones de Proyectos
+    getProyectos,
+    guardarProyecto,
+    getProyectoById,
+    updateProyecto,
+    eliminarProyecto
 } from '../backend/Querys/consulta.js';
 
 import { BrowserWindow, app, ipcMain } from 'electron';
@@ -115,6 +122,27 @@ ipcMain.handle("eliminar-producto", async (event, id) => {
 
 ipcMain.handle("update-producto", async (event, id, data) => {
     return await updateProductoInv(id, data);
+});
+
+// Manejadores IPC para la comunicación de Proyectos
+ipcMain.handle("get-proyectos", async () => {
+  return await getProyectos();
+});
+
+ipcMain.handle("get-proyecto-by-id", async (event, id) => {
+  return await getProyectoById(id);
+});
+
+ipcMain.handle("guardar-proyecto", async (event, proyecto) => {
+  return await guardarProyecto(proyecto);
+});
+
+ipcMain.handle("update-proyecto", async (event, id, data) => {
+  return await updateProyecto(id, data);
+});
+
+ipcMain.handle("eliminar-proyecto", async (event, id) => {
+  return await eliminarProyecto(id);
 });
 
 // Mensajes de log para depuración

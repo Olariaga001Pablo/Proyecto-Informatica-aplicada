@@ -234,3 +234,83 @@ export const eliminarProducto = (id) => {
     });
   });
 };
+
+// ======================================
+// ===  FUNCIONES DE PROYECTOS  ========
+// ======================================
+
+export const getProyectos = () => {
+  return new Promise((resolve, reject) => {
+    db.all(
+      `SELECT P.*, C.nombre AS cliente_nombre, C.apellido AS cliente_apellido
+       FROM Proyecto P
+       LEFT JOIN Cliente C ON P.id_cliente = C.id_cliente`,
+      (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      }
+    );
+  });
+};
+
+export const guardarProyecto = (proyecto) => {
+  return new Promise((resolve, reject) => {
+    const stmt = db.prepare(
+      `INSERT INTO Proyecto (tipo, costo, duracion, fecha, direccion, codigo, id_cliente)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`
+    );
+    stmt.run(
+      proyecto.tipo,
+      proyecto.costo,
+      proyecto.duracion,
+      proyecto.fecha,
+      proyecto.direccion,
+      proyecto.codigo,
+      proyecto.id_cliente || null,
+      function (err) {
+        if (err) reject(err);
+        else resolve({ ...proyecto, id_proyecto: this.lastID });
+      }
+    );
+  });
+};
+
+export const getProyectoById = (id) => {
+  return new Promise((resolve, reject) => {
+    db.get(
+      `SELECT P.*, C.nombre AS cliente_nombre, C.apellido AS cliente_apellido
+       FROM Proyecto P
+       LEFT JOIN Cliente C ON P.id_cliente = C.id_cliente
+       WHERE P.id_proyecto = ?`,
+      [id],
+      (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      }
+    );
+  });
+};
+
+export const updateProyecto = (id, data) => {
+  return new Promise((resolve, reject) => {
+    const fields = Object.keys(data).map((key) => `${key} = ?`).join(", ");
+    const values = Object.values(data);
+    db.run(
+      `UPDATE Proyecto SET ${fields} WHERE id_proyecto = ?`,
+      [...values, id],
+      function (err) {
+        if (err) reject(err);
+        else resolve({ changes: this.changes });
+      }
+    );
+  });
+};
+
+export const eliminarProyecto = (id) => {
+  return new Promise((resolve, reject) => {
+    db.run("DELETE FROM Proyecto WHERE id_proyecto = ?", id, function (err) {
+      if (err) reject(err);
+      else resolve({ changes: this.changes });
+    });
+  });
+};

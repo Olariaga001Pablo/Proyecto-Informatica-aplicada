@@ -31,3 +31,12 @@ contextBridge.exposeInMainWorld("inventarioAPI", {
     updateProducto: (id, data) => ipcRenderer.invoke("update-producto", id, data),
     eliminarProducto: (id) => ipcRenderer.invoke("eliminar-producto", id)
 });
+
+// Funciones para la gestión de Proyectos 
+contextBridge.exposeInMainWorld("proyectoAPI", {
+  getProyectos: () => ipcRenderer.invoke("get-proyectos"),
+  getProyectoById: (id) => ipcRenderer.invoke("get-proyecto-by-id", id),
+  guardarProyecto: (proyecto) => ipcRenderer.invoke("guardar-proyecto", proyecto),
+  updateProyecto: (id, data) => ipcRenderer.invoke("update-proyecto", id, data),
+  eliminarProyecto: (id) => ipcRenderer.invoke("eliminar-proyecto", id)
+});

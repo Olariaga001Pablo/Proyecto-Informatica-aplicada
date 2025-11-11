@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectos</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="proyectos-container">
+    <header class="proyectos-header">
+      <button id="home" class="btn-volver">←</button>
+      <h1>Proyectos</h1>
+      <button id="btn-add-proyecto" class="btn-agregar">+ Agregar</button>
+    </header>
+
+    <!-- Contador -->
+    <p class="contador">Total de proyectos: <span id="proyectos-count">0</span></p>
+
+    <!-- Contenedor dinámico donde script.js inyecta los proyectos -->
+    <main id="contenedor" class="proyectos-lista">
+      <!-- Aquí se llenan las cards con cargarProyectos() -->
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
