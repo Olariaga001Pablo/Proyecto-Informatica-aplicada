@@ -82,6 +82,18 @@ export const updateCliente = (id, data) => {
   });
 };
 
+export const eliminarCliente = (id) => {
+  return new Promise((resolve, reject) => {
+    db.run('DELETE FROM Cliente WHERE id_cliente = ?', id, function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ changes: this.changes });
+      }
+    });
+  });
+};
+
 // ======================================
 // ===  FUNCIONES DE PROVEEDORES  ========
 // ======================================
