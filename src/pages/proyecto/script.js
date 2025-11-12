@@ -262,11 +262,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("btn-confirmar")?.addEventListener("click", async () => {
       try {
         await window.proyectoAPI.eliminarProyecto(id);
-        alert("Proyecto eliminado correctamente.");
+        console.log("Proyecto eliminado correctamente");
         window.location.href = "proyecto.html";
       } catch (error) {
         console.error("Error al eliminar proyecto:", error);
-        alert("No se pudo eliminar el proyecto.");
       }
     });
   }
