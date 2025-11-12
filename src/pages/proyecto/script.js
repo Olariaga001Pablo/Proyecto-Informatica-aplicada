@@ -266,6 +266,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "proyecto.html";
       } catch (error) {
         console.error("Error al eliminar proyecto:", error);
+        alert("Error al eliminar el proyecto.");
       }
     });
   }

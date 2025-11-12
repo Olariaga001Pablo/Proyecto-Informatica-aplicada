@@ -243,6 +243,7 @@ async function deleteProducto() {
   if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
     try {
       await window.inventarioAPI.eliminarProducto(id);
+      console.log("Producto eliminado correctamente");
       window.location.href = "inventario.html";
     } catch (error) {
       console.error("Error al eliminar producto:", error);

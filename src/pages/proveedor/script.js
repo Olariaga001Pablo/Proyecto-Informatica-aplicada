@@ -17,12 +17,12 @@ document.getElementById("btn-cancelar")?.addEventListener("click", () => {
   window.location.href = "proveedor.html";
 });
 
-// ---------- Backend y UI ----------
+
+// ---------- Funciones Backend ----------
 
 async function getProveedores() {
   try {
-    const proveedores = await window.proveedorAPI.getProveedores();
-    return proveedores;
+    return await window.proveedorAPI.getProveedores();
   } catch (error) {
     console.error("Error al obtener proveedores:", error);
     return [];
@@ -31,13 +31,30 @@ async function getProveedores() {
 
 async function getProveedorById(id) {
   try {
-    const proveedor = await window.proveedorAPI.getProveedorById(id);
-    return proveedor;
+    return await window.proveedorAPI.getProveedorById(id);
   } catch (error) {
     console.error("Error al obtener proveedor por ID:", error);
     return null;
   }
 }
+
+async function deleteProveedor(id) {
+  if (!id) {
+    console.error("ID de proveedor no proporcionado en la URL");
+    return;
+  }
+
+  try {
+    await window.proveedorAPI.deleteProveedor(id);
+    console.log("Proveedor eliminado correctamente.");
+    window.location.href = "proveedor.html";
+  } catch (error) {
+    console.error("Error al eliminar proveedor:", error);
+  }
+}
+
+
+// ---------- Funciones de soporte UI ----------
 
 function obtenerIdProveedor() {
   const btn = document.querySelectorAll(".btn-editar");
@@ -73,8 +90,7 @@ async function cargarProveedores() {
 
   const proveedores = await getProveedores();
   actualizarProveedoresCount(proveedores.length);
-
-  contenedor.innerHTML = ""; // Limpiar antes de agregar
+  contenedor.innerHTML = "";
 
   let fila;
 
@@ -103,13 +119,14 @@ async function cargarProveedores() {
 
     fila.appendChild(card);
   });
+
   obtenerIdProveedor();
 }
 
-async function createProveedor() {
-  const form = document.getElementById("form-agregar-proveedor");
-  if (!form) return;
 
+// ---------- CRUD: Crear / Modificar ----------
+
+async function createProveedor() {
   const nuevoProveedor = {
     nombre: document.getElementById("nombre")?.value || '',
     direccion: document.getElementById("direccion")?.value || '',
@@ -134,26 +151,6 @@ function initFormSubmit() {
   });
 }
 
-function initFormSubmitModificar() {
-  const btnGuardar = document.getElementById("btn-guardar");
-  const btnEliminar = document.getElementById("btn-eliminar");
-  const form = document.querySelector(".form-cliente");
-
-  btnGuardar?.addEventListener("click", async (e) => {
-    e.preventDefault();
-    await updateProveedor();
-  });
-
-  btnEliminar?.addEventListener("click", (e) => {
-  e.preventDefault();
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-  if (id) {
-    window.location.href = `eliminarProveedor.html?id=${id}`;
-  }
-});
-}
-
 async function updateProveedor() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
@@ -161,6 +158,7 @@ async function updateProveedor() {
     console.error("ID de proveedor no proporcionado en la URL");
     return;
   }
+
   const proveedorActualizado = {
     nombre: document.getElementById("mod-nombre")?.value || '',
     direccion: document.getElementById("mod-direccion")?.value || '',
@@ -177,20 +175,27 @@ async function updateProveedor() {
   }
 }
 
-async function deleteProveedor(id) {
-  if (!id) {
-    console.error("ID de proveedor no proporcionado en la URL");
-    return;
-  }
+function initFormSubmitModificar() {
+  const btnGuardar = document.getElementById("btn-guardar");
+  const btnEliminar = document.getElementById("btn-eliminar");
 
-  try {
-    await window.proveedorAPI.deleteProveedor(id);
-    window.location.href = "proveedor.html";
-  } catch (error) {
-    console.error("Error al eliminar proveedor:", error);
-  }
+  btnGuardar?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await updateProveedor();
+  });
+
+  btnEliminar?.addEventListener("click", (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    if (id) {
+      window.location.href = `eliminarProveedor.html?id=${id}`;
+    }
+  });
 }
 
+
+// ---------- UI: Rellenar Formulario ----------
 
 function rellenarFormulario(proveedor) {
   if (proveedor) {
@@ -202,16 +207,51 @@ function rellenarFormulario(proveedor) {
   }
 }
 
+
+// ---------- Eliminar Proveedor ----------
+
+function initEliminarProveedor() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const btnCancelar = document.getElementById("cancelar-eliminar");
+  const btnConfirmar = document.getElementById("confirmar-eliminar");
+
+  // Cancelar
+  btnCancelar?.addEventListener("click", () => {
+    window.history.back();
+  });
+
+  // Confirmar eliminación
+  btnConfirmar?.addEventListener("click", async () => {
+    if (!id) {
+      console.error("No se encontró el ID del proveedor en la URL.");
+      return;
+    }
+
+    try {
+      await deleteProveedor(id);
+      console.log("Proveedor eliminado correctamente.");
+    } catch (error) {
+      console.error("Error al eliminar proveedor:", error);
+    }
+  });
+}
+
+
 // ---------------------------- INICIALIZACIÓN ----------------------------
+
 document.addEventListener("DOMContentLoaded", async () => {
   const pathname = window.location.pathname;
 
   if (pathname.includes("proveedor.html")) {
     await cargarProveedores();
   }
+
   if (pathname.includes("agregarProveedor.html")) {
     initFormSubmit();
   }
+
   if (pathname.includes("modificarProveedor.html")) {
     const proveedor = await obtenerProveedorPorId();
     if (proveedor) {
@@ -221,18 +261,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     initFormSubmitModificar();
   }
+
   if (pathname.includes("eliminarProveedor.html")) {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-
-    document.getElementById("cancelar-eliminar")?.addEventListener("click", () => {
-      window.history.back();
-    });
-
-    document.getElementById("confirmar-eliminar")?.addEventListener("click", async () => {
-      if (id) {
-        await deleteProveedor(id);
-      }
-    });
+    initEliminarProveedor();
   }
 });

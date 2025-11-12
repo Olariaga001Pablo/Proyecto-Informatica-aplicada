@@ -254,7 +254,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (pathname.includes("eliminarCliente.html")) {
-    console.log("En eliminarCliente.html");
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
@@ -267,7 +266,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       try {
         await window.api.deleteCliente(id);
-        alert("Cliente eliminado correctamente.");
+        console.log("Cliente eliminado correctamente");
         window.location.href = "cliente.html";
       } catch (error) {
         console.error("Error al eliminar cliente:", error);
