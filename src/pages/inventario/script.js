@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     try {
       await window.inventarioAPI.eliminarProducto(id);
-      alert("Producto eliminado correctamente.");
+      console.log("Producto eliminado correctamente");
       window.location.href = "inventario.html";
     } catch (error) {
       console.error("Error al eliminar producto:", error);
