@@ -148,7 +148,7 @@ async function createProyecto() {
   };
 
   try {
-    await window.proyectoAPI.addProyecto(nuevoProyecto);
+    await window.proyectoAPI.guardarProyecto(nuevoProyecto);
     window.location.href = "proyecto.html";
   } catch (error) {
     console.error("Error al crear proyecto:", error);
