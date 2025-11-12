@@ -48,7 +48,7 @@
 
       <article class="card">
         <div class="card-icon"><img src="./public/icons/lineicons--clipboard.svg" alt="proyectos"></div>
-        <div class="card-number">8</div>
+        <div class="card-number" id="proyectos-count">0</div>
         <div class="card-label">Proyectos Activos</div>
       </article>
     </section>
@@ -64,6 +64,23 @@
           }
         } catch (error) {
           console.error("Error al obtener clientes:", error);
+          if (contadorElement) contadorElement.textContent = "Error";
+        }
+      });
+    </script>
+    <script
+      type="module"
+      >
+      // Actualiza el contador de proyectos en index.html
+      document.addEventListener("DOMContentLoaded", async () => {
+        const contadorElement = document.getElementById("proyectos-count");
+        try {
+          const proyectos = await window.proyectoAPI.getProyectos(); // Llama al backend
+          if (contadorElement) {
+            contadorElement.textContent = proyectos.length || "0"; // Actualiza el número
+          }
+        } catch (error) {
+          console.error("Error al obtener proyectos:", error);
           if (contadorElement) contadorElement.textContent = "Error";
         }
       });

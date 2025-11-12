@@ -85,6 +85,7 @@ async function cargarProyectos() {
     return;
   }
 
+  let fila;
   proyectos.forEach((proyecto) => {
     const cliente = clientes.find(c => c.id_cliente === proyecto.id_cliente);
     const nombreCliente = cliente
