@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("btn-confirmar")?.addEventListener("click", async () => {
       try {
-        await window.proyectoAPI.deleteProyecto(id);
+        await window.proyectoAPI.eliminarProyecto(id);
         alert("Proyecto eliminado correctamente.");
         window.location.href = "proyecto.html";
       } catch (error) {
