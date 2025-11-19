@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Añadir Proyecto</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="proyectos-container">
+    <header class="proyectos-header">
+      <button id="home" class="btn-volver">←</button>
+    </header>
+
+    <main>
+      <form id="form-agregar-proyecto" class="form-proyecto">
+        <div id="mensaje-error" class="error-notification"></div>
+
+        <h2>Proyectos &gt; Añadir</h2>
+
+        <!-- Cliente -->
+        <label for="cliente">Cliente</label>
+        <select id="cliente" required>
+          <option value="">Elegir Cliente</option>
+        </select>
+
+        <!-- Tipo -->
+        <label for="tipo">Tipo de Proyecto</label>
+        <input type="text" id="tipo" placeholder="Tipo de proyecto" required>
+
+        <!-- Dirección -->
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" placeholder="Dirección del proyecto" required>
+
+        <!-- Costo -->
+        <label for="costo">Costo total ($)</label>
+        <input type="number" id="costo" placeholder="Costo total" min="0" required>
+
+        <!-- Duración -->
+        <label for="duracion">Duración (días)</label>
+        <input type="number" id="duracion" placeholder="Duración en días" min="0" required>
+
+        <!-- Fecha -->
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" required>
+
+        <!-- Código -->
+        <label for="codigo">Código</label>
+        <input type="text" id="codigo" placeholder="Código del proyecto">
+
+        <!-- Botones -->
+        <div class="form-botones">
+          <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn-guardar">Guardar</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>
