@@ -29,7 +29,13 @@ import {
     guardarProyecto,
     getProyectoById,
     updateProyecto,
-    eliminarProyecto
+    eliminarProyecto,
+
+    // Funciones de Facturación
+    getFacturas,
+    // Inicialización de la BD (debe llamarse desde app.whenReady)
+    initDatabase
+
 } from '../backend/Querys/consulta.js';
 
 import { BrowserWindow, app, ipcMain } from 'electron';
@@ -145,12 +151,24 @@ ipcMain.handle("eliminar-proyecto", async (event, id) => {
   return await eliminarProyecto(id);
 });
 
+ipcMain.handle("get-facturacion", async () => {
+    return await getFacturas();
+});
 // Mensajes de log para depuración
 ipcMain.on("log-message", (event, msg) => {
     console.log("Log from renderer:", msg);
 });
 
 // Inicializa la aplicación cuando esté lista
-app.whenReady().then(createWindow).catch((error) => {
+app.whenReady().then(async () => {
+    try {
+        // Inicializar la base de datos antes de crear la ventana
+        await initDatabase(app);
+    } catch (error) {
+        console.error('Error inicializando la base de datos:', error);
+        // continuar para permitir abrir la ventana incluso si la BD falla (opcional)
+    }
+    createWindow();
+}).catch((error) => {
     console.error("An error occurred during app initialization:", error);
 });
