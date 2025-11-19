@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="clientes-container">
+    <header class="clientes-header">
+      <button id="home" class="btn-volver">←</button>
+      <h1>Clientes</h1>
+      <button id="btn-add-cliente" class="btn-agregar">+ Agregar</button>
+    </header>
+
+    <!-- Contador -->
+    <p class="contador">Total de clientes: <span id="clientes-count">0</span></p>
+
+    <!-- Contenedor dinámico donde script.js inyecta clientes -->
+    <main id="contenedor" class="clientes-lista">
+      <!-- Aquí se llenan las cards con cargarClientes() -->
+    </main>
+  </div>
+  
+
+  <script src="script.js"></script>
+</body>
+</html>
