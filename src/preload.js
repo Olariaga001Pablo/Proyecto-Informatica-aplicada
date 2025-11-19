@@ -40,3 +40,7 @@ contextBridge.exposeInMainWorld("proyectoAPI", {
   updateProyecto: (id, data) => ipcRenderer.invoke("update-proyecto", id, data),
   eliminarProyecto: (id) => ipcRenderer.invoke("eliminar-proyecto", id)
 });
+
+contextBridge.exposeInMainWorld("facturacionAPI", {
+    getFacturacion: () => ipcRenderer.invoke("get-facturacion")
+});
