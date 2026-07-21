@@ -29,7 +29,8 @@ contextBridge.exposeInMainWorld("inventarioAPI", {
     getProductoById: (id) => ipcRenderer.invoke("get-producto-by-id", id),
     guardarProducto: (producto) => ipcRenderer.invoke("guardar-producto", producto),
     updateProducto: (id, data) => ipcRenderer.invoke("update-producto", id, data),
-    eliminarProducto: (id) => ipcRenderer.invoke("eliminar-producto", id)
+    eliminarProducto: (id) => ipcRenderer.invoke("eliminar-producto", id),
+    getTiposProducto: () => ipcRenderer.invoke("get-tipos-producto")
 });
 
 // Funciones para la gestión de Proyectos 
@@ -41,6 +42,59 @@ contextBridge.exposeInMainWorld("proyectoAPI", {
   eliminarProyecto: (id) => ipcRenderer.invoke("eliminar-proyecto", id)
 });
 
-contextBridge.exposeInMainWorld("facturacionAPI", {
-    getFacturacion: () => ipcRenderer.invoke("get-facturacion")
+contextBridge.exposeInMainWorld("especialidadesAPI", {
+  getEspecialidades: () => ipcRenderer.invoke("get-especialidades"),
+  addEspecialidad: (especialidad) => ipcRenderer.invoke("add-especialidad", especialidad),
+  deleteEspecialidad: (id) => ipcRenderer.invoke("delete-especialidad", id)
 });
+
+contextBridge.exposeInMainWorld("empleadosAPI", {
+  getEmpleados: () => ipcRenderer.invoke("get-empleados"),
+  getEmpleadoById: (id) => ipcRenderer.invoke("get-empleado-by-id", id),
+  updateEmpleado: (id, data) => ipcRenderer.invoke("update-empleado", id, data),
+  deleteEmpleado: (id) => ipcRenderer.invoke("delete-empleado", id)
+});
+
+contextBridge.exposeInMainWorld("auditoriaAPI", {
+  getAuditoria: (limite) => ipcRenderer.invoke("get-auditoria", limite)
+});
+
+contextBridge.exposeInMainWorld("productoProyectoAPI", {
+  getProductosProyecto: (id_proyecto) => ipcRenderer.invoke("get-productos-proyecto", id_proyecto),
+  getPanelesProyecto: (id_proyecto) => ipcRenderer.invoke("get-paneles-proyecto", id_proyecto),
+  asignarProducto: (id_proyecto, id_producto, cantidad) =>
+    ipcRenderer.invoke("asignar-producto-proyecto", id_proyecto, id_producto, cantidad),
+  quitarProducto: (id_proyecto, id_producto) =>
+    ipcRenderer.invoke("quitar-producto-proyecto", id_proyecto, id_producto)
+});
+
+contextBridge.exposeInMainWorld("simulacionAPI", {
+  addSimulacion: (datos) => ipcRenderer.invoke("add-simulacion", datos),
+  getSimulaciones: () => ipcRenderer.invoke("get-simulaciones"),
+  getSimulacionById: (id) => ipcRenderer.invoke("get-simulacion-by-id", id),
+  deleteSimulacion: (id) => ipcRenderer.invoke("delete-simulacion", id)
+});
+
+contextBridge.exposeInMainWorld("facturacionAPI", {
+  getFacturacion: () => ipcRenderer.invoke("get-facturacion"),
+  addFacturacion: (id_proyecto, fecha) => ipcRenderer.invoke("add-facturacion", id_proyecto, fecha),
+  getFacturaDetalle: (id_facturacion) => ipcRenderer.invoke("get-factura-detalle", id_facturacion),
+  agregarItemManual: (id_facturacion, item) => ipcRenderer.invoke("agregar-item-manual", id_facturacion, item),
+  eliminarItemFactura: (id_item) => ipcRenderer.invoke("eliminar-item-factura", id_item),
+  agregarPago: (id_facturacion, pago) => ipcRenderer.invoke("agregar-pago", id_facturacion, pago),
+  eliminarPago: (id_pago) => ipcRenderer.invoke("eliminar-pago", id_pago)
+});
+
+contextBridge.exposeInMainWorld("authAPI", {
+  login: (email, password) => ipcRenderer.invoke("login", { email, password }),
+  logout: () => ipcRenderer.invoke("logout"),
+  getCurrentUser: () => ipcRenderer.invoke("get-current-user")
+});
+ 
+contextBridge.exposeInMainWorld("usuariosAPI", {
+  getUsuarios: () => ipcRenderer.invoke("get-usuarios"),
+  addUsuario: (usuario) => ipcRenderer.invoke("add-usuario", usuario),
+  updateUsuario: (id, data) => ipcRenderer.invoke("update-usuario", id, data),
+  deleteUsuario: (id) => ipcRenderer.invoke("delete-usuario", id)
+});
+ 

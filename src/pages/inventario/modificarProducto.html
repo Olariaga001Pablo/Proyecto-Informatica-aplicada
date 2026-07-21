@@ -16,7 +16,10 @@
 
     <form class="form-cliente">
       <input type="text" id="mod-nombre" placeholder="Nombre" required>
-      <input type="text" id="mod-tipo" placeholder="Tipo de Producto">
+      <select id="mod-tipo" class="select-tipo" required>
+        <option value="">Seleccione un Tipo</option>
+      </select>
+      <input type="number" id="mod-potencia" placeholder="Potencia (W)" step="1">
       <input type="number" id="mod-precio" placeholder="Precio" step="0.01" required>
       <input type="number" id="mod-stock" placeholder="Stock" required>
       <select id="mod-proveedor" class="select-proveedor" required>

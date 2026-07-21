@@ -1,0 +1,313 @@
+/* ==== ESTILOS DE EMPLEADOS ==== */
+body {
+  font-family: Arial, sans-serif;
+  background: #fef6fb;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.modulo-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* Encabezado */
+.modulo-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modulo-header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.btn-volver {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+}
+.btn-volver:hover {
+  color: #000;
+}
+
+.btn-agregar {
+  background: #7b1fa2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-agregar:hover {
+  background: #6a1b9a;
+}
+
+/* Contador */
+.contador {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* ---- Lista de empleados ---- */
+.empleados-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.empleado-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 2px solid #bbb;
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: transform 0.15s ease, border-color 0.2s;
+}
+
+.empleado-card:hover {
+  transform: translateY(-2px);
+  border-color: #7b1fa2;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.empleado-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.empleado-info strong {
+  font-size: 16px;
+  color: #111;
+}
+
+.empleado-info span {
+  font-size: 13px;
+  color: #666;
+}
+
+.especialidades-tags {
+  color: #7b1fa2 !important;
+  font-weight: 500;
+}
+
+.empleado-acciones {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-editar {
+  background: #e1bee7;
+  color: #4a148c;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-editar:hover {
+  background: #ce93d8;
+}
+
+.empleado-acciones .btn-eliminar {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.empleado-acciones .btn-eliminar:hover {
+  background: #ef9a9a;
+}
+
+/* ---- Formulario (agregar / modificar) ---- */
+.form-empleado {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.form-empleado label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: -8px;
+}
+
+.form-empleado input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-empleado input:focus {
+  border-color: #7b1fa2;
+}
+
+/* Checkboxes de especialidades */
+.checkboxes-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fef6fb;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.checkbox-item:has(input:checked) {
+  border-color: #7b1fa2;
+  background: #f3e5f5;
+}
+
+.checkbox-item input {
+  width: auto;
+  cursor: pointer;
+}
+
+/* Botones del formulario */
+.form-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-cancelar {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-cancelar:hover {
+  background: #ef9a9a;
+}
+
+.btn-guardar {
+  background: #c8e6c9;
+  color: #1b5e20;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-guardar:hover {
+  background: #a5d6a7;
+}
+
+/* Notificación de error */
+.error-notification {
+  display: none;
+  background-color: #fce4e4;
+  color: #c00000;
+  border: 1px solid #c00000;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.error-notification.visible {
+  display: flex;
+}
+
+.error-notification::before {
+  content: '⚠️';
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+/* ==== ELIMINAR EMPLEADO ==== */
+
+.body-eliminar {
+  background: #fef6fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.eliminar-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 60px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  max-width: 400px;
+  width: 90%;
+}
+
+.eliminar-modal h2 {
+  font-size: 20px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.eliminar-botones {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn-eliminar {
+  background: #c8e6c9;
+  color: #1b5e20;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn-eliminar:hover {
+  background: #a5d6a7;
+}

@@ -1,0 +1,377 @@
+/* ==== ESTILOS DE SIMULACIÓN ==== */
+body {
+  font-family: Arial, sans-serif;
+  background: #fef6fb;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.clientes-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* Encabezado */
+.clientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.clientes-header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-volver {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+}
+.btn-volver:hover {
+  color: #000;
+}
+
+.btn-agregar {
+  background: #7b1fa2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-agregar:hover {
+  background: #6a1b9a;
+}
+
+.contador {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* ---- Lista de simulaciones ---- */
+.simulaciones-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.simulacion-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border: 2px solid #bbb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: transform 0.15s ease, border-color 0.2s;
+}
+
+.simulacion-card:hover {
+  transform: translateY(-2px);
+  border-color: #7b1fa2;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.simulacion-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.simulacion-info strong {
+  font-size: 16px;
+  color: #111;
+}
+
+.simulacion-info span {
+  font-size: 13px;
+  color: #666;
+}
+
+/* Resultado resumido en la tarjeta de lista */
+.simulacion-resultado {
+  display: flex;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
+.resultado-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f3e5f5;
+  border-radius: 10px;
+  padding: 8px 14px;
+  min-width: 100px;
+}
+
+.resultado-chip .valor {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a148c;
+}
+
+.resultado-chip .etiqueta {
+  font-size: 11px;
+  color: #7b1fa2;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.resultado-chip.ahorro {
+  background: #e8f5e9;
+}
+.resultado-chip.ahorro .valor {
+  color: #1b5e20;
+}
+.resultado-chip.ahorro .etiqueta {
+  color: #2e7d32;
+}
+
+.simulacion-acciones {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-ver {
+  background: #e1bee7;
+  color: #4a148c;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-ver:hover {
+  background: #ce93d8;
+}
+
+.simulacion-acciones .btn-eliminar {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.simulacion-acciones .btn-eliminar:hover {
+  background: #ef9a9a;
+}
+
+/* ---- Formulario (agregar) ---- */
+.form-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.form-cliente label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: -8px;
+}
+
+.form-cliente input,
+.select-proveedor {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-cliente input:focus,
+.select-proveedor:focus {
+  border-color: #7b1fa2;
+}
+
+.form-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-cancelar {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-cancelar:hover {
+  background: #ef9a9a;
+}
+
+.btn-guardar {
+  background: #c8e6c9;
+  color: #1b5e20;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-guardar:hover {
+  background: #a5d6a7;
+}
+
+.error-notification {
+  display: none;
+  background-color: #fce4e4;
+  color: #c00000;
+  border: 1px solid #c00000;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+.error-notification.visible {
+  display: flex;
+}
+.error-notification::before {
+  content: '⚠️';
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+/* ---- Detalle de simulación ---- */
+.detalle-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detalle-seccion {
+  background: #fef6fb;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.detalle-seccion h3 {
+  margin: 0 0 12px 0;
+  font-size: 15px;
+  color: #7b1fa2;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.detalle-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detalle-dato .etiqueta {
+  font-size: 12px;
+  color: #888;
+}
+
+.detalle-dato .valor {
+  font-size: 15px;
+  color: #222;
+  font-weight: 600;
+}
+
+/* Resultados destacados (RF11 / RF12) */
+.resultados-destacados {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.resultado-box {
+  background: #f3e5f5;
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+}
+
+.resultado-box .valor-grande {
+  font-size: 28px;
+  font-weight: 700;
+  color: #4a148c;
+}
+
+.resultado-box .etiqueta {
+  font-size: 13px;
+  color: #7b1fa2;
+  margin-top: 4px;
+}
+
+.resultado-box.ahorro {
+  background: #e8f5e9;
+}
+.resultado-box.ahorro .valor-grande {
+  color: #1b5e20;
+}
+.resultado-box.ahorro .etiqueta {
+  color: #2e7d32;
+}
+
+/* ---- Eliminar (modal) ---- */
+.body-eliminar {
+  background: #fef6fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.eliminar-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 60px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+  width: 90%;
+}
+
+.eliminar-modal h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.eliminar-botones {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}

@@ -5,17 +5,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Panel - Inicio</title>
   <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 </head>
 <body>
   <aside class="sidebar">
     <ul>
-      <li><a href="#" title="Inicio"><img src="./public/icons/majesticons--home.svg" alt="home"><span>Home</span></a></li>
-      <li><a href="./pages/cliente/cliente.html" title="Clientes"><img src="./public/icons/line-md--account.svg" alt="clientes"><span>Clientes</span></a></li>
-      <li><a href="./pages/proyecto/proyecto.html" title="Proyectos"><img src="./public/icons/lineicons--clipboard.svg" alt="proyectos"><span>Proyectos</span></a></li>
-      <li><a href="./pages/inventario/inventario.html" title="Inventario"><img src="./public/icons/lineicons--box-closed.svg" alt="inventario"><span>Inventario</span></a></li>
-      <li><a href="./pages/proveedor/proveedor.html" title="Proveedores"><img src="./public/icons/line-md--account.svg" alt="proveedores"><span>Proveedores</span></a></li>
-      <li><a href="./pages/facturacion/facturacion.html" title="Facturación"><img src="./public/icons/eos-icons--modified-date.svg" alt="facturación"><span>Facturación</span></a></li>
-      <li><a href="./pages/configuracion.html" title="Configuración"><img src="./public/icons/lineicons--gear-1.svg" alt="configuración"><span>Configuración</span></a></li>
+      <li><a href="./index.html" title="Inicio"><i class="ti ti-home"></i><span>Home</span></a></li>
+      <li><a href="./pages/cliente/cliente.html" title="Clientes"><i class="ti ti-users"></i><span>Clientes</span></a></li>
+      <li><a href="./pages/proyecto/proyecto.html" title="Proyectos"><i class="ti ti-clipboard-list"></i><span>Proyectos</span></a></li>
+      <li><a href="./pages/inventario/inventario.html" title="Inventario"><i class="ti ti-box"></i><span>Inventario</span></a></li>
+
+      <li id="nav-proveedores" style="display:none;"><a href="./pages/proveedor/proveedor.html" title="Proveedores"><i class="ti ti-truck-delivery"></i><span>Proveedores</span></a></li>
+      <li id="nav-facturacion" style="display:none;"><a href="./pages/facturacion/facturacion.html" title="Facturación"><i class="ti ti-file-invoice"></i><span>Facturación</span></a></li>
+      <li id="nav-simulacion" style="display:none;"><a href="./pages/simulacion/simulacion.html" title="Simulaciones"><i class="ti ti-sun"></i><span>Simulaciones</span></a></li>
+
+
+      <li id="nav-divider" class="sidebar-divider" style="display:none;"></li>
+
+      <li id="nav-empleados" style="display:none;"><a href="./pages/empleado/empleados.html" title="Empleados"><i class="ti ti-id-badge-2"></i><span>Empleados</span></a></li>
+      <li id="nav-especialidades" style="display:none;"><a href="./pages/especialidad/especialidades.html" title="Especialidades"><i class="ti ti-certificate"></i><span>Especialidades</span></a></li>
+      <li id="nav-usuarios" style="display:none;"><a href="./pages/usuarios/usuarios.html" title="Usuarios"><i class="ti ti-user-cog"></i><span>Usuarios</span></a></li>
+      <li id="nav-auditoria" style="display:none;"><a href="./pages/auditoria/auditoria.html" title="Auditoría"><i class="ti ti-history"></i><span>Auditoría</span></a></li>
+      <li id="nav-configuracion" style="display:none;"><a href="./pages/configuracion.html" title="Configuración"><i class="ti ti-settings"></i><span>Configuración</span></a></li>
     </ul>
   </aside>
 
@@ -24,61 +35,115 @@
       <div class="profile">
         <div class="avatar" aria-hidden="true"></div>
         <div class="greeting">
-          <div class="name">Bienvenida, Kiara.</div>
-          <div class="role">Administrador</div>
+          <div class="name" id="usuario-nombre">Bienvenido/a</div>
+          <div class="role" id="usuario-rol"></div>
         </div>
       </div>
 
       <div class="header-actions">
         <a href="./pages/cliente/agregarCliente.html" title="Agregar Cliente">
-          <img src="./public/icons/add-person.svg" alt="agregarCliente" class="icon-small">
+          <i class="ti ti-user-plus icon-small"></i>
         </a>
         <a href="./pages/proyecto/agregarProyecto.html" title="Agregar Proyecto">
-        <img src="./public/icons/document-add.svg" alt="agregarProyecto" class="icon-small">
+          <i class="ti ti-file-plus icon-small"></i>
         </a>
+        <button id="btn-logout" title="Cerrar sesión" class="icon-small" style="background:none;border:none;cursor:pointer;">
+          <i class="ti ti-logout"></i>
+        </button>
       </div>
     </header>
 
     <section class="cards">
+      <article class="card" id="card-empleados" style="display:none;">
+        <div class="card-icon"><i class="ti ti-id-badge-2"></i></div>
+        <div class="card-number" id="empleados-count">0</div>
+        <div class="card-label">Empleados</div>
+      </article>
       <article class="card">
-        <div class="card-icon"><img src="./public/icons/line-md--account.svg" alt="clientes"></div>
+        <div class="card-icon"><i class="ti ti-users"></i></div>
         <div class="card-number" id="clientes-count">0</div>
         <div class="card-label">Clientes</div>
       </article>
-
       <article class="card">
-        <div class="card-icon"><img src="./public/icons/lineicons--clipboard.svg" alt="proyectos"></div>
+        <div class="card-icon"><i class="ti ti-clipboard-list"></i></div>
         <div class="card-number" id="proyectos-count">0</div>
         <div class="card-label">Proyectos Activos</div>
       </article>
     </section>
 
     <script type="module">
-      // Actualiza el contador de clientes en index.html
+      // ------------------------------------------------------------------
+      // Sesión: se valida contra el proceso main (authAPI), no sessionStorage.
+      // Además arma la visibilidad de sidebar/cards según el rol real.
+      // ------------------------------------------------------------------
+      document.addEventListener("DOMContentLoaded", async () => {
+        let usuario = null;
+        try {
+          usuario = await window.authAPI.getCurrentUser();
+        } catch (error) {
+          console.error("Error al verificar sesión:", error);
+        }
+
+        if (!usuario) {
+          window.location.href = "./pages/usuarios/login.html";
+          return;
+        }
+
+        document.getElementById("usuario-nombre").textContent = `Bienvenido/a, ${usuario.email}`;
+        document.getElementById("usuario-rol").textContent = usuario.rol;
+
+        const esAdmin = usuario.rol === "administrador";
+
+        if (esAdmin) {
+          ["nav-proveedores", "nav-facturacion", "nav-simulacion", "nav-divider", "nav-empleados",
+           "nav-especialidades", "nav-usuarios", "nav-auditoria", "nav-configuracion", "card-empleados"]
+            .forEach((id) => {
+              const el = document.getElementById(id);
+              if (el) el.style.display = "";
+            });
+
+          // El contador de Empleados solo se pide si el usuario tiene permiso (admin)
+          try {
+            const empleados = await window.empleadosAPI.getEmpleados();
+            document.getElementById("empleados-count").textContent = empleados.length || "0";
+          } catch (error) {
+            console.error("Error al obtener empleados:", error);
+            document.getElementById("empleados-count").textContent = "Error";
+          }
+        }
+
+        document.getElementById("btn-logout")?.addEventListener("click", async () => {
+          try {
+            await window.authAPI.logout();
+          } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+          }
+          window.location.href = "./pages/usuarios/login.html";
+        });
+      });
+    </script>
+
+    <script type="module">
+      // Contador de clientes (visible para admin y empleado)
       document.addEventListener("DOMContentLoaded", async () => {
         const contadorElement = document.getElementById("clientes-count");
         try {
-          const clientes = await window.api.getClientes(); // Llama al backend
-          if (contadorElement) {
-            contadorElement.textContent = clientes.length || "0"; // Actualiza el número
-          }
+          const clientes = await window.api.getClientes();
+          if (contadorElement) contadorElement.textContent = clientes.length || "0";
         } catch (error) {
           console.error("Error al obtener clientes:", error);
           if (contadorElement) contadorElement.textContent = "Error";
         }
       });
     </script>
-    <script
-      type="module"
-      >
-      // Actualiza el contador de proyectos en index.html
+
+    <script type="module">
+      // Contador de proyectos (visible para admin y empleado)
       document.addEventListener("DOMContentLoaded", async () => {
         const contadorElement = document.getElementById("proyectos-count");
         try {
-          const proyectos = await window.proyectoAPI.getProyectos(); // Llama al backend
-          if (contadorElement) {
-            contadorElement.textContent = proyectos.length || "0"; // Actualiza el número
-          }
+          const proyectos = await window.proyectoAPI.getProyectos();
+          if (contadorElement) contadorElement.textContent = proyectos.length || "0";
         } catch (error) {
           console.error("Error al obtener proyectos:", error);
           if (contadorElement) contadorElement.textContent = "Error";

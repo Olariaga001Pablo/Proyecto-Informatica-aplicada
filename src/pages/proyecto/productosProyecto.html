@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos del Proyecto</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="modulo-container">
+    <header class="modulo-header">
+      <button class="btn-volver" onclick="window.location.href='proyecto.html'">⟵</button>
+      <h1>Productos del Proyecto</h1>
+    </header>
+
+    <div id="error-msg" class="error-notification"></div>
+
+    <form id="form-asignar-producto" class="form-inline">
+      <select id="select-producto" required>
+        <option value="">Seleccione un producto</option>
+      </select>
+      <input type="number" id="cantidad-producto" placeholder="Cantidad" min="1" value="1" required>
+      <button type="submit" class="btn-agregar">+ Asignar</button>
+    </form>
+
+    <main id="contenedor" class="lista-simple">
+      <!-- productosProyecto.js llena esto -->
+    </main>
+  </div>
+
+  <script src="./productosProyecto.js"></script>
+</body>
+</html>

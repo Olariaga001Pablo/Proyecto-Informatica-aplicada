@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empleados</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="modulo-container">
+    <header class="modulo-header">
+      <button id="home" class="btn-volver">←</button>
+      <h1>Empleados</h1>
+      <button id="btn-add-empleado" class="btn-agregar">+ Agregar</button>
+    </header>
+
+    <div id="error-msg" class="error-notification"></div>
+
+    <p class="contador">Total de empleados: <span id="empleados-count">0</span></p>
+
+    <main id="contenedor" class="empleados-lista">
+      <!-- script.js llena esto con cargarEmpleados() -->
+    </main>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

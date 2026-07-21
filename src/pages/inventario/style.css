@@ -170,7 +170,9 @@ body {
   border-color: #7b1fa2;
 }
 
-.select-proveedor {
+/* Selects de Proveedor y Tipo de Producto: mismo estilo/halo que los inputs */
+.select-proveedor,
+.select-tipo {
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -179,7 +181,8 @@ body {
   transition: border-color 0.2s;
 }
 
-.select-proveedor:focus {
+.select-proveedor:focus,
+.select-tipo:focus {
   border-color: #7b1fa2;
 }
 
@@ -312,4 +315,23 @@ body {
 
 .btn-eliminar:hover {
   background: #a5d6a7;
+}
+
+
+/* ==== ALERTA DE STOCK BAJO (RF10) ==== */
+.cliente-item.stock-bajo {
+  border: 1px solid #e0a800;
+  background: #fff8e6;
+}
+ 
+.badge-stock-bajo {
+  display: inline-block;
+  background: #fff3cd;
+  color: #856404;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+  vertical-align: middle;
 }

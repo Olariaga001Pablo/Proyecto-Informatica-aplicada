@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auditoría</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="modulo-container">
+    <header class="modulo-header">
+      <button id="home" class="btn-volver">←</button>
+      <h1>Auditoría</h1>
+    </header>
+
+    <div id="error-msg" class="error-notification"></div>
+
+    <p class="contador">Mostrando los últimos <span id="auditoria-count">0</span> eventos</p>
+
+    <div class="tabla-wrap">
+      <table class="tabla-auditoria">
+        <thead>
+          <tr>
+            <th>Fecha y hora</th>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Evento</th>
+            <th>Módulo</th>
+            <th>Resultado</th>
+            <th>Origen</th>
+          </tr>
+        </thead>
+        <tbody id="contenedor">
+          <!-- script.js llena esto -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html> 

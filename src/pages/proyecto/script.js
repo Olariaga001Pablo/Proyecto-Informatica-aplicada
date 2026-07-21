@@ -45,6 +45,15 @@ async function getClientes() {
   }
 }
 
+async function getEmpleados() {
+  try {
+    return await window.empleadosAPI.getEmpleados();
+  } catch (error) {
+    console.error("Error al obtener empleados:", error);
+    return [];
+  }
+}
+
 
 // ---------- Funciones de soporte ----------
 
@@ -65,6 +74,43 @@ async function cargarClientes() {
   } catch (error) {
     console.error("Error al cargar clientes en el select:", error);
   }
+}
+
+// idsSeleccionados: array de id_empleado que ya están asignados (para
+// premarcar los checkboxes al editar). Vacío en el alta.
+async function cargarEmpleadosCheckboxes(contenedorId, idsSeleccionados = []) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor) return;
+
+  try {
+    const empleados = await getEmpleados();
+
+    if (empleados.length === 0) {
+      contenedor.innerHTML = '<p class="sin-opciones">No hay empleados cargados todavía.</p>';
+      return;
+    }
+
+    contenedor.innerHTML = "";
+    empleados.forEach((emp) => {
+      const label = document.createElement("label");
+      const checked = idsSeleccionados.includes(emp.id_empleado) ? "checked" : "";
+      label.innerHTML = `
+        <input type="checkbox" value="${emp.id_empleado}" ${checked}>
+        ${emp.nombre} ${emp.apellido || ""}
+      `;
+      contenedor.appendChild(label);
+    });
+  } catch (error) {
+    console.error("Error al cargar empleados en checkboxes:", error);
+  }
+}
+
+// Lee los checkboxes tildados de un contenedor y devuelve los ids como números
+function leerEmpleadosSeleccionados(contenedorId) {
+  const contenedor = document.getElementById(contenedorId);
+  if (!contenedor) return [];
+  return Array.from(contenedor.querySelectorAll("input[type='checkbox']:checked"))
+    .map((cb) => parseInt(cb.value));
 }
 
 
@@ -105,11 +151,18 @@ async function cargarProyectos() {
         <p><strong>Duración:</strong> ${proyecto.duracion || 0} días</p>
         <p><strong>Fecha:</strong> ${proyecto.fecha || "-"}</p>
         <p><strong>Código:</strong> ${proyecto.codigo || "-"}</p>
+        <p><strong>Empleados:</strong> ${proyecto.empleados_nombres || "Sin asignar"}</p>
       </div>
 
-      <button class="btn-editar" value="${proyecto.id_proyecto}">
-        <img src="../../public/icons/content-modified.svg" alt="Editar">
-      </button>
+      <div class="proyecto-actions">
+        <button class="btn-editar" value="${proyecto.id_proyecto}">
+          <img src="../../public/icons/content-modified.svg" alt="Editar">
+        </button>
+        <button class="btn-productos" value="${proyecto.id_proyecto}">
+          <img src="../../public/icons/lineicons--box-closed.svg" alt="Productos">
+          Productos
+        </button>
+      </div>
     `;
 
     contenedor.appendChild(card);
@@ -124,11 +177,19 @@ function actualizarProyectosCount(cantidad) {
 }
 
 function obtenerIdProyecto() {
-  const botones = document.querySelectorAll(".btn-editar");
-  botones.forEach(boton => {
+  const botonesEditar = document.querySelectorAll(".btn-editar");
+  botonesEditar.forEach(boton => {
     boton.addEventListener("click", (e) => {
       const id = e.currentTarget.value;
       window.location.href = `modificarProyecto.html?id=${id}`;
+    });
+  });
+
+  const botonesProductos = document.querySelectorAll(".btn-productos");
+  botonesProductos.forEach(boton => {
+    boton.addEventListener("click", (e) => {
+      const id = e.currentTarget.value;
+      window.location.href = `productosProyecto.html?id=${id}`;
     });
   });
 }
@@ -144,7 +205,8 @@ async function createProyecto() {
     duracion: parseInt(document.getElementById("duracion")?.value) || 0,
     fecha: document.getElementById("fecha")?.value || "",
     codigo: document.getElementById("codigo")?.value || "",
-    id_cliente: parseInt(document.getElementById("cliente")?.value) || null
+    id_cliente: parseInt(document.getElementById("cliente")?.value) || null,
+    empleados: leerEmpleadosSeleccionados("empleados-checkboxes")
   };
 
   try {
@@ -178,7 +240,8 @@ async function updateProyecto() {
     duracion: parseInt(document.getElementById("mod-duracion")?.value) || 0,
     fecha: document.getElementById("mod-fecha")?.value || "",
     codigo: document.getElementById("mod-codigo")?.value || "",
-    id_cliente: parseInt(document.getElementById("mod-cliente")?.value) || null
+    id_cliente: parseInt(document.getElementById("mod-cliente")?.value) || null,
+    empleados: leerEmpleadosSeleccionados("mod-empleados-checkboxes")
   };
 
   try {
@@ -241,13 +304,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (pathname.includes("agregarProyecto.html")) {
     await cargarClientes();
+    await cargarEmpleadosCheckboxes("empleados-checkboxes");
     initFormSubmitProyecto();
   }
 
   if (pathname.includes("modificarProyecto.html")) {
     await cargarClientes();
     const proyecto = await obtenerProyectoPorId();
-    if (proyecto) rellenarFormularioProyecto(proyecto);
+    if (proyecto) {
+      rellenarFormularioProyecto(proyecto);
+      const idsAsignados = (proyecto.empleados || []).map((e) => e.id_empleado);
+      await cargarEmpleadosCheckboxes("mod-empleados-checkboxes", idsAsignados);
+    }
     initFormSubmitModificarProyecto();
   }
 

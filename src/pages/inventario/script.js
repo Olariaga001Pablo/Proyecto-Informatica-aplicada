@@ -68,24 +68,24 @@ function actualizarProductosCount(cantidad) {
   const contador = document.getElementById("productos-count");
   if (contador) contador.textContent = cantidad;
 }
+
 // Función reescrita usando async/await
-async function validarDuplicadosProducto(nombre, proveedor, tipo) {
+async function validarDuplicadosProducto(nombre, id_proveedor, id_tipo) {
   try {
     // Usamos await para esperar el resultado de la promesa
-    const productos = await getProductos(); 
-    const proveedorNombre = proveedor ? (await window.proveedorAPI.getProveedorById(proveedor))?.nombre : null;
-    
+    const productos = await getProductos();
+    const proveedorNombre = id_proveedor ? (await window.proveedorAPI.getProveedorById(id_proveedor))?.nombre : null;
+
     // Si obtenemos la lista, realizamos la validación
-    const validacion = productos.some(producto => 
-      producto.nombre === nombre && 
+    const validacion = productos.some(producto =>
+      producto.nombre === nombre &&
       producto.proveedor_nombre === proveedorNombre &&
-      producto.tipo === tipo
+      producto.id_tipo === id_tipo
     );
-    return validacion ; // true si es duplicado, false si no lo es
+    return validacion; // true si es duplicado, false si no lo es
   } catch (error) {
     // Si hay un error al obtener los productos (ej: error de API/DB)
     console.error("Error al obtener la lista de productos para validación:", error);
-  
   }
 }
 
@@ -94,9 +94,9 @@ function mostrarError(mensaje) {
     if (errorDiv) {
         // Establecer el contenido
         errorDiv.textContent = mensaje;
-        
+
         // Agregar la clase CSS y mostrar el elemento
-        errorDiv.classList.add('error-notification'); 
+        errorDiv.classList.add('error-notification');
         errorDiv.style.display = 'flex'; // Usamos 'flex' si el CSS usa display: flex
         // Desplazarse al mensaje de error
         errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -130,15 +130,22 @@ async function cargarProductos() {
       contenedor.appendChild(fila);
     }
 
+    // RF10: alerta visual de stock bajo. umbral_minimo = 0 significa
+    // "sin umbral configurado" -> no se muestra alerta para no dar falsos positivos.
+    const stockBajo = producto.umbral_minimo > 0 && producto.stock <= producto.umbral_minimo;
+
     const card = document.createElement("div");
-    card.className = "cliente-item";
+    card.className = "cliente-item" + (stockBajo ? " stock-bajo" : "");
     card.id = producto.id_producto;
 
     card.innerHTML = `
       <div class="cliente-info">
-        <h2 class="cliente-nombre">${producto.nombre || ""}</h2>
+        <h2 class="cliente-nombre">
+          ${producto.nombre || ""}
+          ${stockBajo ? '<span class="badge-stock-bajo" title="Stock por debajo del mínimo">⚠ Stock bajo</span>' : ''}
+        </h2>
         <p class="cliente-email">Tipo: ${producto.tipo || ""}</p>
-        <p class="cliente-telefono">Stock: ${producto.stock || 0}</p>
+        <p class="cliente-telefono">Stock: ${producto.stock || 0}${producto.umbral_minimo ? ` (mínimo: ${producto.umbral_minimo})` : ''}</p>
         <p class="cliente-direccion">Precio: $${producto.precio || 0}</p>
         <p class="cliente-proveedor">Proveedor: ${producto.proveedor_nombre || ""}</p>
       </div>
@@ -158,19 +165,24 @@ async function createProducto() {
   if (!form) return;
   limpiarError();
 
+  const tipoSeleccionado = document.getElementById("tipo-producto");
+  const idTipo = parseInt(tipoSeleccionado?.value) || null;
+  const esPanel = idTipo === 1; // id_tipo = 1 corresponde a "Panel" en TipoProducto
+
   const nuevoProducto = {
     nombre: document.getElementById("nombre-producto")?.value || '',
-    tipo: document.getElementById("tipo-producto")?.value || '',
+    id_tipo: idTipo,
+    potencia_w: esPanel ? (parseFloat(document.getElementById("potencia-producto")?.value) || null) : null,
     precio: parseFloat(document.getElementById("precio-producto")?.value) || 0,
     stock: parseInt(document.getElementById("stock-producto")?.value) || 0,
-    proveedor: parseInt(document.getElementById("proveedor-producto")?.value) || null,
-    umbral: parseInt(document.getElementById("umbral-minimo")?.value) || 0
+    id_proveedor: parseInt(document.getElementById("proveedor-producto")?.value) || null,
+    umbral_minimo: parseInt(document.getElementById("umbral-minimo")?.value) || 0
   };
-  // Validar duplicados antes de guardar
-  const esDuplicado = await validarDuplicadosProducto(nuevoProducto.nombre, nuevoProducto.proveedor, nuevoProducto.tipo);
+
+  const esDuplicado = await validarDuplicadosProducto(nuevoProducto.nombre, nuevoProducto.id_proveedor, nuevoProducto.id_tipo);
   if (esDuplicado) {
     mostrarError("Error: Ya existe un producto con el mismo NOMBRE, TIPO y PROVEEDOR.");
-    return; // Detener la creación si es duplicado
+    return;
   }
   try {
     await window.inventarioAPI.guardarProducto(nuevoProducto);
@@ -198,15 +210,15 @@ function initFormSubmitModificar() {
   });
 
   btnEliminar?.addEventListener("click", (e) => {
-  e.preventDefault();
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-  if (id) {
-    window.location.href = `eliminarProducto.html?id=${id}`;
-  } else {
-    alert("No se encontró el producto para eliminar.");
-  }
-});
+    e.preventDefault();
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    if (id) {
+      window.location.href = `eliminarProducto.html?id=${id}`;
+    } else {
+      alert("No se encontró el producto para eliminar.");
+    }
+  });
 }
 
 async function updateProducto() {
@@ -216,13 +228,19 @@ async function updateProducto() {
     console.error("ID de producto no proporcionado en la URL");
     return;
   }
+
+  const tipoSeleccionado = document.getElementById("mod-tipo");
+  const idTipo = parseInt(tipoSeleccionado?.value) || null;
+  const esPanel = idTipo === 1; // mismo criterio que createProducto
+
   const productoActualizado = {
     nombre: document.getElementById("mod-nombre")?.value || '',
-    tipo: document.getElementById("mod-tipo")?.value || '',
+    id_tipo: idTipo,
+    potencia_w: esPanel ? (parseFloat(document.getElementById("mod-potencia")?.value) || null) : null,
     precio: parseFloat(document.getElementById("mod-precio")?.value) || 0,
     stock: parseInt(document.getElementById("mod-stock")?.value) || 0,
-    proveedor: parseInt(document.getElementById("mod-proveedor")?.value) || null,
-    umbral: parseInt(document.getElementById("mod-umbral-minimo")?.value) || 0
+    id_proveedor: parseInt(document.getElementById("mod-proveedor")?.value) || null,
+    umbral_minimo: parseInt(document.getElementById("mod-umbral-minimo")?.value) || 0
   };
 
   try {
@@ -254,12 +272,48 @@ async function deleteProducto() {
 function rellenarFormulario(producto) {
   if (producto) {
     document.getElementById("mod-nombre").value = producto.nombre || "";
-    document.getElementById("mod-tipo").value = producto.tipo || "";
     document.getElementById("mod-precio").value = producto.precio || 0;
     document.getElementById("mod-stock").value = producto.stock || 0;
     document.getElementById("mod-proveedor").value = producto.id_proveedor || "";
-    document.getElementById("mod-umbral-minimo").value = producto.umbral || 0;
+    document.getElementById("mod-umbral-minimo").value = producto.umbral_minimo || 0;
+    document.getElementById("mod-potencia").value = producto.potencia_w || "";
+    // mod-tipo ya queda seleccionado por cargarTiposEnSelect(..., producto.id_tipo)
+    actualizarCampoPotencia("mod-tipo", "mod-potencia");
   }
+}
+
+// Carga los tipos en el menú desplegable del formulario
+async function cargarTiposEnSelect(selectElement, idSeleccionado = null) {
+  try {
+    const tipos = await window.inventarioAPI.getTiposProducto();
+    selectElement.innerHTML = '<option value="">Seleccione un Tipo</option>';
+    tipos.forEach(tipo => {
+      const option = document.createElement('option');
+      option.value = tipo.id_tipo;
+      option.textContent = tipo.nombre;
+      if (idSeleccionado && tipo.id_tipo == idSeleccionado) {
+        option.selected = true;
+      }
+      selectElement.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error al cargar tipos de producto:', error);
+  }
+}
+
+// Muestra/oculta y habilita/deshabilita el campo Potencia según el tipo elegido.
+// Criterio unificado con createProducto/updateProducto: id_tipo === 1 es "Panel".
+function actualizarCampoPotencia(selectId, potenciaInputId) {
+  const select = document.getElementById(selectId);
+  const inputPotencia = document.getElementById(potenciaInputId);
+  if (!select || !inputPotencia) return;
+
+  const esPanel = parseInt(select.value) === 1;
+
+  inputPotencia.disabled = !esPanel;
+  inputPotencia.required = esPanel;
+  inputPotencia.style.display = esPanel ? '' : 'none';
+  if (!esPanel) inputPotencia.value = '';
 }
 
 // Carga los proveedores en el menú desplegable del formulario
@@ -290,38 +344,47 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   if (pathname.includes("agregarProducto.html")) {
     await cargarProveedoresEnSelect(document.getElementById("proveedor-producto"));
+    await cargarTiposEnSelect(document.getElementById("tipo-producto"));
+    actualizarCampoPotencia("tipo-producto", "potencia-producto");
+    document.getElementById("tipo-producto")?.addEventListener("change", () =>
+      actualizarCampoPotencia("tipo-producto", "potencia-producto")
+    );
     initFormSubmit();
   }
   if (pathname.includes("modificarProducto.html")) {
     const producto = await obtenerProductoPorId();
     if (producto) {
       await cargarProveedoresEnSelect(document.getElementById("mod-proveedor"), producto.id_proveedor);
+      await cargarTiposEnSelect(document.getElementById("mod-tipo"), producto.id_tipo);
       rellenarFormulario(producto);
+      document.getElementById("mod-tipo")?.addEventListener("change", () =>
+        actualizarCampoPotencia("mod-tipo", "mod-potencia")
+      );
     } else {
       console.error("No se encontró el producto - ID inválido");
     }
     initFormSubmitModificar();
   }
   if (pathname.includes("eliminarProducto.html")) {
-  console.log("En eliminarProducto.html");
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+    console.log("En eliminarProducto.html");
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
-  document.getElementById("btn-cancelar")?.addEventListener("click", () => {
-    window.history.back();
-  });
+    document.getElementById("btn-cancelar")?.addEventListener("click", () => {
+      window.history.back();
+    });
 
-  const form = document.getElementById("form-eliminar-producto");
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try {
-      await window.inventarioAPI.eliminarProducto(id);
-      console.log("Producto eliminado correctamente");
-      window.location.href = "inventario.html";
-    } catch (error) {
-      console.error("Error al eliminar producto:", error);
-      alert("No se pudo eliminar el producto.");
-    }
-  });
-}
+    const form = document.getElementById("form-eliminar-producto");
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        await window.inventarioAPI.eliminarProducto(id);
+        console.log("Producto eliminado correctamente");
+        window.location.href = "inventario.html";
+      } catch (error) {
+        console.error("Error al eliminar producto:", error);
+        alert("No se pudo eliminar el producto.");
+      }
+    });
+  }
 });

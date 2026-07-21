@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Especialidades</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="modulo-container">
+    <header class="modulo-header">
+      <button id="home" class="btn-volver">←</button>
+      <h1>Especialidades</h1>
+    </header>
+
+    <div id="error-msg" class="error-notification"></div>
+
+    <form id="form-agregar-especialidad" class="form-inline">
+      <input type="text" id="titulo" placeholder="Título (ej: Electricista)" required>
+      <input type="text" id="matricula" placeholder="Matrícula (opcional)">
+      <button type="submit" class="btn-agregar">+ Agregar</button>
+    </form>
+
+    <p class="contador">Total: <span id="especialidades-count">0</span></p>
+
+    <main id="contenedor" class="lista-simple">
+      <!-- script.js llena esto con cargarEspecialidades() -->
+    </main>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

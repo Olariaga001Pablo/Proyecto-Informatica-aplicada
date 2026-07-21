@@ -222,26 +222,29 @@ body {
 
 .error-notification {
     /* Ocultar por defecto */
-    display: none; 
-    
+    display: none;
+
     /* Colores y fondo (para errores) */
     background-color: #fce4e4; /* Fondo rojo muy claro */
     color: #c00000;          /* Texto rojo oscuro */
     border: 1px solid #c00000; /* Borde rojo */
-    
+
     /* Espaciado y tipografía */
     padding: 15px 20px;
     margin-bottom: 20px;
     font-size: 14px;
     font-weight: bold; /* Hace que el mensaje se destaque */
-    
+
     /* Bordes y sombra */
     border-radius: 8px; /* Bordes redondeados */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    
-    /* Estructura (para posible icono) */
-    display: flex;
+
+    /* Estructura (para posible icono), solo cuando está visible */
     align-items: center;
+}
+
+.error-notification.visible {
+  display: flex;
 }
 
 /* Opcional: Estilo para un ícono */
@@ -312,4 +315,50 @@ body {
 
 .btn-eliminar:hover {
   background: #a5d6a7;
+}
+
+/* ==== FACTURACIÓN ==== */
+
+.factura-item {
+  background: #fff;
+  border: 2px solid #bbb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.15s ease, border-color 0.2s;
+}
+
+.factura-item:hover {
+  transform: translateY(-3px);
+  border-color: #7b1fa2;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.factura-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.factura-titulo {
+  font-size: 17px;
+  font-weight: 600;
+  color: #111;
+  margin: 0;
+}
+
+.factura-meta {
+  color: #555;
+  font-size: 14px;
+  margin: 0;
+}
+
+.factura-monto {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1b5e20;
+  white-space: nowrap;
 }

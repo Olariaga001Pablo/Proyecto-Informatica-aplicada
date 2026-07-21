@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Simulación</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="clientes-container">
+    <header class="clientes-header">
+      <button class="btn-volver" onclick="window.history.back()">←</button>
+      <h1>Detalle de Simulación</h1>
+      <button type="button" class="btn-cancelar" id="btn-eliminar">Eliminar</button>
+    </header>
+
+    <div class="detalle-container">
+
+      <!-- RF11 / RF12: resultados principales -->
+      <section class="resultados-destacados">
+        <div class="resultado-box">
+          <div class="valor-grande" id="det-produccion">-</div>
+          <div class="etiqueta">Producción mensual estimada (kWh)</div>
+        </div>
+        <div class="resultado-box ahorro">
+          <div class="valor-grande" id="det-ahorro">-</div>
+          <div class="etiqueta">Ahorro estimado ($/mes)</div>
+        </div>
+      </section>
+
+      <section class="detalle-seccion">
+        <h3>Proyecto</h3>
+        <div class="detalle-grid">
+          <div class="detalle-dato">
+            <span class="etiqueta">Código</span>
+            <span class="valor" id="det-codigo-proyecto">-</span>
+          </div>
+          <div class="detalle-dato">
+            <span class="etiqueta">Tipo de proyecto</span>
+            <span class="valor" id="det-tipo-proyecto">-</span>
+          </div>
+          <div class="detalle-dato">
+            <span class="etiqueta">Cliente</span>
+            <span class="valor" id="det-cliente">-</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="detalle-seccion">
+        <h3>Parámetros de la simulación</h3>
+        <div class="detalle-grid">
+          <div class="detalle-dato">
+            <span class="etiqueta">Cantidad de paneles</span>
+            <span class="valor" id="det-cantidad-paneles">-</span>
+          </div>
+          <div class="detalle-dato">
+            <span class="etiqueta">Potencia por panel</span>
+            <span class="valor" id="det-potencia-panel">-</span>
+          </div>
+          <div class="detalle-dato">
+            <span class="etiqueta">Horas de sol / día</span>
+            <span class="valor" id="det-horas-sol">-</span>
+          </div>
+          <div class="detalle-dato">
+            <span class="etiqueta">Consumo previo</span>
+            <span class="valor" id="det-consumo-previo">-</span>
+          </div>
+          <div class="detalle-dato">
+            <span class="etiqueta">Tarifa por kWh</span>
+            <span class="valor" id="det-tarifa">-</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

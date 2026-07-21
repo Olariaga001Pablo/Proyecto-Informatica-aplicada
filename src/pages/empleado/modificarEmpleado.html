@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modificar Empleado</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="modulo-container">
+    <header class="modulo-header">
+      <button id="btn-volver-lista" class="btn-volver">←</button>
+      <h1>Modificar Empleado</h1>
+    </header>
+
+    <div id="error-msg" class="error-notification"></div>
+
+    <form id="form-modificar-empleado" class="form-empleado">
+      <label for="mod-nombre">Nombre</label>
+      <input type="text" id="mod-nombre" required>
+
+      <label for="mod-apellido">Apellido</label>
+      <input type="text" id="mod-apellido" required>
+
+      <label for="mod-direccion">Dirección</label>
+      <input type="text" id="mod-direccion">
+
+      <label for="mod-codigo_postal">Código postal</label>
+      <input type="text" id="mod-codigo_postal">
+
+      <label>Especialidades</label>
+      <div id="mod-especialidades-checkboxes" class="checkboxes-lista">
+        <!-- script.js llena esto y marca las que ya tiene -->
+      </div>
+
+      <div class="form-botones">
+        <button type="button" id="btn-eliminar-empleado" class="btn-cancelar">Eliminar</button>
+        <button type="submit" class="btn-guardar">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

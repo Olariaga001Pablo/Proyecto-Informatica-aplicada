@@ -10,7 +10,7 @@
 <body>
     <div class="proyectos-container">
         <div class="proyectos-header">
-        <button class="btn-volver" onclick="window.history.back()">⟵</button>
+        <button class="btn-volver" onclick="window.location.href='proyecto.html'">⟵</button>
         <h1>Modificar Proyecto</h1>
     </div>
 
@@ -38,8 +38,13 @@
         <label for="mod-codigo">Código</label>
         <input type="text" id="mod-codigo" placeholder="Código del proyecto">
 
+        <label>Empleados asignados</label>
+        <div id="mod-empleados-checkboxes" class="checkboxes-lista">
+          <!-- script.js llena esto y marca los que ya estén asignados -->
+        </div>
+
         <div class="form-botones">
-            <button type="button" class="btn-cancelar" onclick="window.history.back()">Cancelar</button>
+            <button type="button" class="btn-cancelar" onclick="window.location.href='proyecto.html'">Cancelar</button>
             <button type="button" class="btn-cancelar" id="btn-eliminar">Eliminar</button>
             <button type="button" class="btn-guardar" id="btn-guardar">Guardar Cambios</button>
         </div>

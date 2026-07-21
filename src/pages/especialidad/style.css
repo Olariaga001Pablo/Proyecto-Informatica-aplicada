@@ -1,0 +1,231 @@
+/* ==== ESTILOS DE ESPECIALIDADES ==== */
+body {
+  font-family: Arial, sans-serif;
+  background: #fef6fb;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.modulo-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* Encabezado */
+.modulo-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modulo-header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-volver {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+}
+.btn-volver:hover {
+  color: #000;
+}
+
+/* Formulario inline (agregar especialidad) */
+.form-inline {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.form-inline input {
+  flex: 1;
+  min-width: 160px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-inline input:focus {
+  border-color: #7b1fa2;
+}
+
+.btn-agregar {
+  background: #7b1fa2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.btn-agregar:hover {
+  background: #6a1b9a;
+}
+
+/* Contador */
+.contador {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* Lista simple de especialidades */
+.lista-simple {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #fff;
+  border: 2px solid #bbb;
+  border-radius: 12px;
+  padding: 14px;
+  transition: transform 0.15s ease, border-color 0.2s;
+}
+
+.item-lista:hover {
+  transform: translateY(-2px);
+  border-color: #7b1fa2;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.item-titulo {
+  font-weight: 600;
+  color: #111;
+  flex: 1;
+}
+
+.item-matricula {
+  font-size: 13px;
+  color: #666;
+}
+
+.item-lista .btn-eliminar {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: none;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  transition: background 0.2s;
+}
+.item-lista .btn-eliminar:hover {
+  background: #ef9a9a;
+}
+
+/* Notificación de error (igual a clientes) */
+.error-notification {
+  display: none;
+  background-color: #fce4e4;
+  color: #c00000;
+  border: 1px solid #c00000;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.error-notification.visible {
+  display: flex;
+}
+
+.error-notification::before {
+  content: '⚠️';
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+/* ==== ELIMINAR ESPECIALIDAD ==== */
+
+.body-eliminar {
+  background: #fef6fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.eliminar-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 60px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  max-width: 400px;
+  width: 90%;
+}
+
+.eliminar-modal h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.eliminar-botones {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn-cancelar {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-cancelar:hover {
+  background: #ef9a9a;
+}
+
+.eliminar-modal .btn-eliminar {
+  background: #c8e6c9;
+  color: #1b5e20;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.eliminar-modal .btn-eliminar:hover {
+  background: #a5d6a7;
+}
+
+
